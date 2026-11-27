@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Sparkles } from 'lucide-react'
 
-export const APP_FEATURE_VERSION = '2026-11-27-v2'
+export const APP_FEATURE_VERSION = '2026-11-27-v3'
 const WHATS_NEW_KEY = 'isi-perut:whats-new-seen:v1'
 
 export function shouldShowWhatsNew(): boolean {
@@ -29,24 +29,24 @@ interface WhatsNewModalProps {
 
 const UPDATES: { emoji: string; title: string; desc: string }[] = [
   {
+    emoji: '🗑️',
+    title: 'Editor Sudah Bisa Hapus Tempat',
+    desc: 'Buka menu Edit pada tempat yang ingin dihapus, lalu klik tombol Hapus (2x klik untuk konfirmasi).',
+  },
+  {
+    emoji: '🔑',
+    title: 'Bagaimana Cara Jadi Editor?',
+    desc: 'Tanya Caca ya! Nanti namamu diaktifkan supaya kamu bisa tambah, edit, hapus tempat, & tempel pin.',
+  },
+  {
     emoji: '🎰',
-    title: 'Gacha / SpinWheel Random Pick',
-    desc: 'Bingung mau makan atau ngopi di mana? Klik tombol Gacha untuk acak tempat berdasarkan kategori!',
+    title: 'Gacha Filter Kota (Makassar & Jakarta)',
+    desc: 'Sebelum putar roda Gacha, sekarang bisa pilih kota Makassar, Jakarta (Blok M), atau Semua.',
   },
   {
     emoji: '📋',
-    title: 'Tampilan List Padat',
-    desc: 'Mode tampilan baru yang ringkas agar bisa scroll 10+ tempat sekaligus di layar HP.',
-  },
-  {
-    emoji: '🏙️',
-    title: 'Jakarta & Filter Nama',
-    desc: 'Kini ada pilihan kota Makassar & Jakarta, plus filter berdasarkan siapa yang menambahkan.',
-  },
-  {
-    emoji: '📍',
-    title: 'Tempat Baru Langsung di Atas',
-    desc: 'Setiap tempat baru otomatis muncul di paling atas dan link pendek Google Maps langsung terbaca koordinatnya.',
+    title: 'List Padat & Filter Nama',
+    desc: 'Scroll 10+ tempat sekaligus di HP dan filter berdasarkan siapa yang menambahkan.',
   },
 ]
 

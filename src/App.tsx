@@ -453,15 +453,6 @@ function App() {
                       {!canEdit ? ' (tamu)' : ''}
                     </span>
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsAdminModalOpen(true)}
-                    title="Panel Admin: Atur daftar teman yang boleh edit"
-                    className="inline-flex items-center gap-1 rounded-full border border-ink bg-berry/15 px-2 py-0.5 text-[11px] font-extrabold text-ink hover:bg-berry/25"
-                  >
-                    <ShieldCheck className="h-3 w-3" aria-hidden="true" />
-                    <span>Admin</span>
-                  </button>
                   <a
                     href="https://instagram.com/weareremps"
                     target="_blank"
@@ -786,6 +777,14 @@ function App() {
             <p className="text-[11px] font-semibold text-ink-muted">
               Isi Perut • Makassar &amp; Jakarta Food List
             </p>
+            <button
+              type="button"
+              onClick={() => setIsAdminModalOpen(true)}
+              className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold text-ink-muted/60 hover:text-ink"
+            >
+              <ShieldCheck className="h-3 w-3" aria-hidden="true" />
+              <span>Admin</span>
+            </button>
           </footer>
         </main>
 
@@ -876,7 +875,6 @@ function App() {
           }
         }}
         onClose={() => setIsIdentityModalOpen(false)}
-        onOpenAdmin={() => setIsAdminModalOpen(true)}
       />
 
       <AdminEditorsModal

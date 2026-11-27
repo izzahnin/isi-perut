@@ -57,12 +57,15 @@ export function FriendIdentityModal({
     setError('')
     try {
       const result = await registerOrCheckFriendName(trimmed)
-      if (result === 'exists' && trimmed.toLowerCase() !== initialName.toLowerCase()) {
-        setExistingConfirmName(trimmed)
+      if (
+        result.status === 'exists' &&
+        result.canonicalName.toLowerCase() !== initialName.toLowerCase()
+      ) {
+        setExistingConfirmName(result.canonicalName)
         return
       }
-      saveFriendName(trimmed)
-      onSave(trimmed)
+      saveFriendName(result.canonicalName)
+      onSave(result.canonicalName)
     } finally {
       setIsChecking(false)
     }

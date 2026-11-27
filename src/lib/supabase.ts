@@ -32,28 +32,36 @@ const STORAGE_CATEGORIES_KEY = 'isi-perut:categories:v10'
 const STORAGE_PLACES_KEY = 'isi-perut:places:v10'
 const STORAGE_VISITED_KEY = 'isi-perut:visited:v1'
 
+export interface FriendCheckResult {
+  status: 'created' | 'exists' | 'local'
+  canonicalName: string
+}
+
 export async function registerOrCheckFriendName(
   rawName: string,
-): Promise<'created' | 'exists' | 'local'> {
-  const cleanName = rawName.trim()
-  if (!supabase) return 'local'
+): Promise<FriendCheckResult> {
+  const cleanName = rawName.trim().replace(/\s+/g, ' ')
+  if (!supabase) {
+    return { status: 'local', canonicalName: cleanName }
+  }
 
+  // Escape SQL LIKE wildcards so % or _ in names match literally, case-insensitively
+  const escapedPattern = cleanName.replace(/[%_\\]/g, '\\$&')
   const { data: existing } = await supabase
     .from('friends')
     .select('name')
-    .ilike('name', cleanName)
+    .ilike('name', escapedPattern)
     .maybeSingle()
 
   if (existing) {
-    return 'exists'
+    return { status: 'exists', canonicalName: existing.name }
   }
 
   const { error } = await supabase.from('friends').insert({ name: cleanName })
   if (error) {
-    // Unique constraint conflict means it was just registered
-    return 'exists'
+    return { status: 'exists', canonicalName: cleanName }
   }
-  return 'created'
+  return { status: 'created', canonicalName: cleanName }
 }
 
 export function getLocalVisitedMap(): Record<string, boolean> {

@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   CheckCircle2,
+  ChevronDown,
   Dices,
   LayoutGrid,
   List,
@@ -460,13 +461,21 @@ function App() {
                   <button
                     type="button"
                     onClick={() => setIsIdentityModalOpen(true)}
-                    className="inline-flex items-center gap-1 rounded-full border border-ink bg-paper px-2 py-0.5 text-[11px] font-extrabold text-ink hover:bg-cream-dark"
+                    title="Ganti nama atau pindah akun"
+                    className={cn(
+                      'pop-press inline-flex items-center gap-1 rounded-full border-2 border-ink px-2.5 py-0.5 text-[11px] font-extrabold text-ink shadow-pop-sm',
+                      canEdit
+                        ? 'bg-paper hover:bg-cream-dark'
+                        : 'bg-mango hover:bg-tangerine',
+                    )}
                   >
                     <UserRound className="h-3 w-3" aria-hidden="true" />
                     <span>
-                      {friendName ? friendName.toLowerCase() : 'Isi Nama'}
-                      {!canEdit ? ' (tamu)' : ''}
+                      {canEdit
+                        ? `${friendName ? friendName.toLowerCase() : 'isi nama'} • Ganti`
+                        : 'Tamu • Ganti Akun'}
                     </span>
+                    <ChevronDown className="h-3 w-3" aria-hidden="true" />
                   </button>
                   <a
                     href="https://instagram.com/weareremps"
@@ -543,6 +552,22 @@ function App() {
             <span>
               Kamu sedang offline — menampilkan daftar terakhir yang tersimpan.
             </span>
+          </div>
+        )}
+
+        {/* Guest Mode Callout Banner */}
+        {!canEdit && friendName && (
+          <div className="mx-4 mb-2 flex items-center justify-between gap-2 rounded-2xl border-2 border-ink bg-mango/45 px-3.5 py-2 text-xs font-bold text-ink">
+            <span>
+              Mode Tamu (lihat &amp; Gacha). Sudah diaktifkan Caca?
+            </span>
+            <button
+              type="button"
+              onClick={() => setIsIdentityModalOpen(true)}
+              className="pop-press shrink-0 rounded-xl border-2 border-ink bg-paper px-2.5 py-1 text-[11px] font-extrabold text-ink shadow-pop-sm"
+            >
+              Ganti Akun
+            </button>
           </div>
         )}
 
@@ -876,6 +901,7 @@ function App() {
       <FriendIdentityModal
         isOpen={isIdentityModalOpen}
         initialName={friendName}
+        currentCanEdit={canEdit}
         canDismiss={Boolean(friendName)}
         onSave={(savedName, nextCanEdit) => {
           setFriendName(savedName)

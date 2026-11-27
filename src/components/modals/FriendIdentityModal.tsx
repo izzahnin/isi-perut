@@ -38,6 +38,7 @@ export function saveFriendSession(name: string, canEdit: boolean): void {
 interface FriendIdentityModalProps {
   isOpen: boolean
   initialName: string
+  currentCanEdit?: boolean
   canDismiss: boolean
   onSave: (name: string, canEdit: boolean) => void
   onClose: () => void
@@ -47,6 +48,7 @@ interface FriendIdentityModalProps {
 export function FriendIdentityModal({
   isOpen,
   initialName,
+  currentCanEdit = false,
   canDismiss,
   onSave,
   onClose,
@@ -146,8 +148,20 @@ export function FriendIdentityModal({
               id="friend-identity-title"
               className="mt-3 font-display text-2xl font-extrabold text-ink"
             >
-              Siapa namamu?
+              {canDismiss ? 'Ganti Nama / Pindah Akun' : 'Siapa namamu?'}
             </h2>
+            {canDismiss && initialName && (
+              <p className="mt-1 inline-flex items-center gap-1.5 rounded-xl border border-ink/30 bg-paper px-2.5 py-1 text-[11px] font-bold text-ink">
+                <span>Aktif sekarang:</span>
+                <span className="font-extrabold">
+                  {initialName.toLowerCase()}
+                </span>
+                <span>•</span>
+                <span className="font-extrabold">
+                  {currentCanEdit ? 'Editor' : 'Tamu (Read-Only)'}
+                </span>
+              </p>
+            )}
             <p className="mt-1 text-sm text-ink-muted">
               Cukup pakai <span className="font-bold text-ink">1 nama unik</span>{' '}
               (tanpa buat akun). Status <em>Sudah Mampir</em> tersimpan pribadi di

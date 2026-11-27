@@ -9,7 +9,7 @@ const FRIEND_CAN_EDIT_KEY = 'isi-perut:friend-can-edit:v1'
 export function getSavedFriendName(): string {
   if (typeof window === 'undefined') return ''
   try {
-    return window.localStorage.getItem(FRIEND_NAME_KEY)?.trim() ?? ''
+    return (window.localStorage.getItem(FRIEND_NAME_KEY)?.trim() ?? '').toLowerCase()
   } catch {
     return ''
   }
@@ -28,7 +28,7 @@ export function getSavedCanEdit(): boolean {
 export function saveFriendSession(name: string, canEdit: boolean): void {
   if (typeof window === 'undefined') return
   try {
-    window.localStorage.setItem(FRIEND_NAME_KEY, name.trim())
+    window.localStorage.setItem(FRIEND_NAME_KEY, name.trim().toLowerCase())
     window.localStorage.setItem(FRIEND_CAN_EDIT_KEY, canEdit ? '1' : '0')
   } catch {
     // Ignore storage errors
@@ -97,8 +97,8 @@ export function FriendIdentityModal({
   }
 
   const handleEnterAsGuest = () => {
-    saveFriendSession('Tamu', false)
-    onSave('Tamu', false)
+    saveFriendSession('tamu', false)
+    onSave('tamu', false)
   }
 
   return (

@@ -228,7 +228,7 @@ function App() {
   const addedByOptions = useMemo(() => {
     const names = new Set<string>()
     for (const p of cityScopedPlaces) {
-      if (p.added_by?.trim()) names.add(p.added_by.trim())
+      if (p.added_by?.trim()) names.add(p.added_by.trim().toLowerCase())
     }
     return Array.from(names).sort((a, b) => a.localeCompare(b))
   }, [cityScopedPlaces])
@@ -449,8 +449,8 @@ function App() {
                   >
                     <UserRound className="h-3 w-3" aria-hidden="true" />
                     <span>
-                      {friendName || 'Isi Nama'}
-                      {!canEdit ? ' (Tamu)' : ''}
+                      {friendName ? friendName.toLowerCase() : 'Isi Nama'}
+                      {!canEdit ? ' (tamu)' : ''}
                     </span>
                   </button>
                   <button

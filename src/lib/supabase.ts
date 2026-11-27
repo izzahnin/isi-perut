@@ -59,7 +59,7 @@ const STORAGE_FRIENDS_KEY = 'isi-perut:friends:v1'
 
 export function getLocalFriends(): LocalFriendRecord[] {
   const defaults: LocalFriendRecord[] = DEFAULT_EDITOR_ALLOWLIST.map((n) => ({
-    name: n.charAt(0).toUpperCase() + n.slice(1),
+    name: n.toLowerCase(),
     can_edit: true,
     created_at: '2026-11-27T00:00:00.000Z',
   }))
@@ -97,7 +97,7 @@ export async function isFriendAllowedToEdit(name: string): Promise<boolean> {
 export async function registerOrCheckFriendName(
   rawName: string,
 ): Promise<FriendCheckResult> {
-  const cleanName = rawName.trim().replace(/\s+/g, ' ')
+  const cleanName = rawName.trim().replace(/\s+/g, ' ').toLowerCase()
   const envAllowlist = getEnvEditorAllowlist()
 
   if (!supabase) {
@@ -105,15 +105,15 @@ export async function registerOrCheckFriendName(
       return {
         status: 'local',
         canonicalName: cleanName,
-        canEdit: envAllowlist.includes(cleanName.toLowerCase()),
+        canEdit: envAllowlist.includes(cleanName),
       }
     }
     const existingLocal = getLocalFriends().find(
-      (f) => f.name.toLowerCase() === cleanName.toLowerCase(),
+      (f) => f.name.toLowerCase() === cleanName,
     )
     return {
       status: existingLocal ? 'exists' : 'local',
-      canonicalName: existingLocal?.name ?? cleanName,
+      canonicalName: (existingLocal?.name ?? cleanName).toLowerCase(),
       canEdit: Boolean(existingLocal?.can_edit),
     }
   }
@@ -127,16 +127,15 @@ export async function registerOrCheckFriendName(
     .maybeSingle()
 
   if (existing) {
+    const canonical = existing.name.toLowerCase()
     const canEdit = envAllowlist
-      ? envAllowlist.includes(existing.name.toLowerCase())
+      ? envAllowlist.includes(canonical)
       : Boolean(existing.can_edit)
-    return { status: 'exists', canonicalName: existing.name, canEdit }
+    return { status: 'exists', canonicalName: canonical, canEdit }
   }
 
   // Nama di luar daftar friends otomatis masuk sebagai Tamu (Read-Only + Gacha)
-  const canEdit = envAllowlist
-    ? envAllowlist.includes(cleanName.toLowerCase())
-    : false
+  const canEdit = envAllowlist ? envAllowlist.includes(cleanName) : false
   return { status: 'created', canonicalName: cleanName, canEdit }
 }
 
@@ -350,7 +349,7 @@ export async function createPlace(input: NewPlaceInput): Promise<Place> {
     lat: input.lat ?? null,
     lng: input.lng ?? null,
     maps_url: input.maps_url ?? null,
-    added_by: input.added_by?.trim() || 'Teman',
+    added_by: (input.added_by?.trim() || 'teman').toLowerCase(),
     is_visited: input.is_visited ?? false,
     sort_order: nextOrder,
     created_at: new Date().toISOString(),

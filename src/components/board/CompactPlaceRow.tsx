@@ -56,7 +56,7 @@ export function CompactPlaceRow({
           <p className="truncate text-[11px] font-medium text-ink-muted">
             {place.area ? `📍 ${place.area}` : 'Area belum diisi'}
             {' • '}
-            by {place.added_by}
+            by {place.added_by.toLowerCase()}
             {place.notes.length > 0 ? ` • ${place.notes[0]}` : ''}
           </p>
         </div>

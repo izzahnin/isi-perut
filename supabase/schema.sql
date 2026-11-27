@@ -55,7 +55,7 @@ values
 on conflict (id) do nothing;
 
 insert into public.friends (name, can_edit)
-values ('Pije', true), ('Caca', true)
+values ('pije', true), ('caca', true)
 on conflict (name) do update set can_edit = excluded.can_edit;
 
 -- Row Level Security (kolaborasi ringan tanpa login wajib untuk grup teman)

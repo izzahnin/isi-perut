@@ -95,7 +95,7 @@ export function AdminEditorsModal({
 
   const handleAddFriend = async (e: FormEvent) => {
     e.preventDefault()
-    const cleanName = newName.trim().replace(/\s+/g, ' ')
+    const cleanName = newName.trim().replace(/\s+/g, ' ').toLowerCase()
     if (!cleanName) return
 
     setIsLoading(true)
@@ -393,7 +393,7 @@ export function AdminEditorsModal({
                         >
                           <div className="min-w-0">
                             <p className="truncate font-display text-sm font-extrabold text-ink">
-                              {friend.name}
+                              {friend.name.toLowerCase()}
                             </p>
                             <p className="text-[11px] font-semibold text-ink-muted">
                               {friend.can_edit

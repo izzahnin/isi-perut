@@ -148,7 +148,7 @@ export function AddPlaceDrawer({
           lat: parsedMaps.lat,
           lng: parsedMaps.lng,
           maps_url: parsedMaps.mapsUrl,
-          added_by: addedBy.trim() || 'Teman',
+          added_by: (addedBy.trim() || 'teman').toLowerCase(),
           is_visited: isVisited,
         })
       } else {
@@ -161,7 +161,7 @@ export function AddPlaceDrawer({
           lat: parsedMaps.lat,
           lng: parsedMaps.lng,
           maps_url: parsedMaps.mapsUrl,
-          added_by: addedBy.trim() || 'Teman',
+          added_by: (addedBy.trim() || 'teman').toLowerCase(),
           is_visited: isVisited,
         })
       }

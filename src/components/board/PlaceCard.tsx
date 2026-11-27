@@ -218,7 +218,7 @@ export function PlaceCard({
             </motion.button>
 
             <span className="text-[11px] font-semibold text-ink-muted">
-              by {place.added_by}
+              by {place.added_by.toLowerCase()}
             </span>
           </div>
 

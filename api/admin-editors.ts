@@ -80,7 +80,10 @@ export default async function handler(
   }
 
   const body = await readJsonBody(req)
-  const rawName = typeof body.name === 'string' ? body.name.trim().replace(/\s+/g, ' ') : ''
+  const rawName =
+    typeof body.name === 'string'
+      ? body.name.trim().replace(/\s+/g, ' ').toLowerCase()
+      : ''
 
   if (!rawName) {
     sendJson(res, 400, { error: 'Nama teman wajib diisi.' })

@@ -41,7 +41,7 @@ const UPDATES: { emoji: string; title: string; desc: string }[] = [
   {
     emoji: '🎰',
     title: 'Gacha Filter Kota (Makassar & Jakarta)',
-    desc: 'Sebelum putar roda Gacha, sekarang bisa pilih kota Makassar, Jakarta (Blok M), atau Semua.',
+    desc: 'Sebelum putar roda Gacha, sekarang bisa pilih kota Makassar, Jakarta, atau Semua.',
   },
   {
     emoji: '📋',

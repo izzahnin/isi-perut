@@ -8,10 +8,13 @@ import type { Category, Place } from '../../types/place'
 interface MakassarMapViewProps {
   places: Place[]
   categories: Category[]
+  cityFilter: 'all' | 'makassar' | 'jakarta'
+  canEdit?: boolean
   onEditPlace: (place: Place) => void
 }
 
-const MAKASSAR_CENTER = { lat: -5.1477, lng: 119.424 }
+const MAKASSAR_CENTER = { lat: -5.1477, lng: 119.424, zoom: 13 }
+const JAKARTA_CENTER = { lat: -6.2442, lng: 106.8006, zoom: 15 }
 const TILE_SIZE = 256
 
 function latLngToWorld(lat: number, lng: number, zoom: number) {
@@ -37,10 +40,17 @@ function worldToLatLng(worldX: number, worldY: number, zoom: number) {
 export function MakassarMapView({
   places,
   categories,
+  cityFilter,
+  canEdit = true,
   onEditPlace,
 }: MakassarMapViewProps) {
-  const [zoom, setZoom] = useState(13)
-  const [center, setCenter] = useState(MAKASSAR_CENTER)
+  const defaultFocus =
+    cityFilter === 'jakarta' ? JAKARTA_CENTER : MAKASSAR_CENTER
+  const [zoom, setZoom] = useState(defaultFocus.zoom)
+  const [center, setCenter] = useState({
+    lat: defaultFocus.lat,
+    lng: defaultFocus.lng,
+  })
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [tilesFailed, setTilesFailed] = useState(false)
   const [isPanning, setIsPanning] = useState(false)
@@ -182,10 +192,10 @@ export function MakassarMapView({
             <button
               type="button"
               onClick={() => {
-                setCenter(MAKASSAR_CENTER)
-                setZoom(13)
+                setCenter({ lat: defaultFocus.lat, lng: defaultFocus.lng })
+                setZoom(defaultFocus.zoom)
               }}
-              aria-label="Pusatkan ke Makassar"
+              aria-label="Pusatkan peta"
               className="pop-press flex h-8 w-8 items-center justify-center rounded-xl border-2 border-ink bg-mango text-ink shadow-pop-sm"
             >
               <Compass className="h-3.5 w-3.5" />
@@ -193,14 +203,14 @@ export function MakassarMapView({
           </div>
         </div>
 
-        {/* Pannable Map viewport */}
+        {/* Pannable Map viewport (compact height so list below peeks into view for easy scrolling) */}
         <div
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={endPan}
           onPointerCancel={endPan}
           className={cn(
-            'relative h-[360px] w-full touch-none overflow-hidden select-none',
+            'relative h-[280px] sm:h-[340px] w-full touch-none overflow-hidden select-none',
             isPanning ? 'cursor-grabbing' : 'cursor-grab',
           )}
           style={{
@@ -268,6 +278,11 @@ export function MakassarMapView({
             })}
           </div>
         </div>
+
+        {/* Scroll cue bar below map */}
+        <div className="border-t-2 border-ink bg-cream-dark px-3.5 py-1.5 text-center text-[11px] font-extrabold text-ink-muted">
+          ↓ Scroll ke bawah untuk melihat daftar &amp; link Google Maps
+        </div>
       </div>
 
       {/* Selected Pinned Place Preview */}
@@ -287,13 +302,15 @@ export function MakassarMapView({
           </div>
 
           <div className="flex shrink-0 items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => onEditPlace(selectedPlace)}
-              className="pop-press rounded-xl border-2 border-ink bg-paper px-2.5 py-2 text-xs font-extrabold text-ink shadow-pop-sm"
-            >
-              Edit
-            </button>
+            {canEdit && (
+              <button
+                type="button"
+                onClick={() => onEditPlace(selectedPlace)}
+                className="pop-press rounded-xl border-2 border-ink bg-paper px-2.5 py-2 text-xs font-extrabold text-ink shadow-pop-sm"
+              >
+                Edit
+              </button>
+            )}
             <a
               href={buildGoogleMapsUrl({
                 lat: selectedPlace.lat,
@@ -351,13 +368,15 @@ export function MakassarMapView({
                     )}
                   </div>
                   <div className="flex shrink-0 items-center gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => onEditPlace(place)}
-                      className="rounded-lg border border-ink bg-mango/60 px-2 py-1 text-[11px] font-extrabold text-ink hover:bg-mango"
-                    >
-                      Tempel Pin
-                    </button>
+                    {canEdit && (
+                      <button
+                        type="button"
+                        onClick={() => onEditPlace(place)}
+                        className="rounded-lg border border-ink bg-mango/60 px-2 py-1 text-[11px] font-extrabold text-ink hover:bg-mango"
+                      >
+                        Tempel Pin
+                      </button>
+                    )}
                     <a
                       href={href}
                       target="_blank"

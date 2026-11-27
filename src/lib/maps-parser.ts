@@ -71,6 +71,33 @@ export function parseMapsInput(rawInput: string): ParsedMapsLocation {
   }
 }
 
+export function isShortMapsUrl(rawInput: string): boolean {
+  return /^https:\/\/(maps\.app\.goo\.gl|goo\.gl\/maps|g\.co\/kgs)\//i.test(
+    rawInput.trim(),
+  )
+}
+
+/**
+ * Resolves a shortened Google Maps URL via the Vercel serverless endpoint (/api/resolve-maps)
+ * and extracts lat, lng, and the final URL.
+ */
+export async function resolveShortMapsUrl(
+  shortUrl: string,
+): Promise<ParsedMapsLocation | null> {
+  if (!isShortMapsUrl(shortUrl)) return null
+  try {
+    const res = await fetch(
+      `/api/resolve-maps?url=${encodeURIComponent(shortUrl.trim())}`,
+    )
+    if (!res.ok) return null
+    const data = (await res.json()) as { resolvedUrl?: string }
+    if (!data.resolvedUrl) return null
+    return parseMapsInput(data.resolvedUrl)
+  } catch {
+    return null
+  }
+}
+
 /**
  * Builds the best 1-tap Google Maps deep-link for a place.
  */

@@ -1,18 +1,8 @@
-import {
-  DndContext,
-  DragOverlay,
-  closestCenter,
-  type DragEndEvent,
-  type DragStartEvent,
-} from '@dnd-kit/core'
-import {
-  SortableContext,
-  arrayMove,
-  rectSortingStrategy,
-} from '@dnd-kit/sortable'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   CheckCircle2,
+  Dices,
+  LayoutGrid,
   List,
   Map as MapIcon,
   Plus,
@@ -29,6 +19,7 @@ import {
   ALL_CATEGORIES_ID,
   CategoryTabs,
 } from './components/board/CategoryTabs'
+import { CompactPlaceRow } from './components/board/CompactPlaceRow'
 import { MakassarMapView } from './components/board/MakassarMapView'
 import { PlaceCard } from './components/board/PlaceCard'
 import {
@@ -39,15 +30,17 @@ import { AddCategoryModal } from './components/modals/AddCategoryModal'
 import { AddPlaceDrawer } from './components/modals/AddPlaceDrawer'
 import {
   FriendIdentityModal,
+  getSavedCanEdit,
   getSavedFriendName,
 } from './components/modals/FriendIdentityModal'
+import { SpinWheelModal } from './components/modals/SpinWheelModal'
+import {
+  WhatsNewModal,
+  shouldShowWhatsNew,
+} from './components/modals/WhatsNewModal'
 import { PWAInstallBanner } from './components/ui/PWAInstallBanner'
 import { CATEGORY_THEMES } from './lib/category-theme'
-import {
-  parseCategoryDropId,
-  triggerHaptic,
-  useDndSensors,
-} from './lib/dnd-config'
+import { triggerHaptic } from './lib/dnd-config'
 import {
   createCategory,
   createPlace,
@@ -63,13 +56,15 @@ import {
 import { cn } from './lib/utils'
 import type {
   Category,
+  CityId,
   NewCategoryInput,
   NewPlaceInput,
   Place,
   UpdatePlaceInput,
 } from './types/place'
 
-type ViewMode = 'list' | 'map'
+type ViewMode = 'list' | 'compact' | 'map'
+type CityFilter = 'makassar' | 'jakarta' | 'all'
 
 function InstagramIcon({ className = 'h-3.5 w-3.5' }: { className?: string }) {
   return (
@@ -94,8 +89,10 @@ function App() {
   const [categories, setCategories] = useState<Category[]>([])
   const [places, setPlaces] = useState<Place[]>([])
   const [activeCategoryId, setActiveCategoryId] = useState<string>('')
+  const [cityFilter, setCityFilter] = useState<CityFilter>('makassar')
   const [query, setQuery] = useState('')
   const [visitFilter, setVisitFilter] = useState<VisitFilter>('all')
+  const [addedByFilter, setAddedByFilter] = useState<string>('all')
   const [viewMode, setViewMode] = useState<ViewMode>('list')
   const [isLoading, setIsLoading] = useState(true)
   const [isOffline, setIsOffline] = useState(
@@ -105,21 +102,21 @@ function App() {
   const [friendName, setFriendName] = useState<string>(() =>
     getSavedFriendName(),
   )
+  const [canEdit, setCanEdit] = useState<boolean>(() => getSavedCanEdit())
   const [isIdentityModalOpen, setIsIdentityModalOpen] = useState<boolean>(
     () => !getSavedFriendName(),
+  )
+  const [isWhatsNewOpen, setIsWhatsNewOpen] = useState<boolean>(
+    () => Boolean(getSavedFriendName()) && shouldShowWhatsNew(),
   )
 
   const [isPlaceDrawerOpen, setIsPlaceDrawerOpen] = useState(false)
   const [editingPlace, setEditingPlace] = useState<Place | null>(null)
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
+  const [isSpinWheelOpen, setIsSpinWheelOpen] = useState(false)
 
-  const [activeDragPlaceId, setActiveDragPlaceId] = useState<string | null>(
-    null,
-  )
   const [toastMessage, setToastMessage] = useState<string | null>(null)
   const toastTimerRef = useRef<number | null>(null)
-
-  const sensors = useDndSensors()
 
   const showToast = useCallback((message: string) => {
     setToastMessage(message)
@@ -202,32 +199,45 @@ function App() {
     [categories],
   )
 
-  const activeDragPlace = useMemo(
-    () => places.find((p) => p.id === activeDragPlaceId) ?? null,
-    [places, activeDragPlaceId],
-  )
+  const cityScopedPlaces = useMemo(() => {
+    if (cityFilter === 'all') return places
+    return places.filter((p) => (p.city ?? 'makassar') === cityFilter)
+  }, [places, cityFilter])
+
+  const addedByOptions = useMemo(() => {
+    const names = new Set<string>()
+    for (const p of cityScopedPlaces) {
+      if (p.added_by?.trim()) names.add(p.added_by.trim())
+    }
+    return Array.from(names).sort((a, b) => a.localeCompare(b))
+  }, [cityScopedPlaces])
 
   const countsByCategory = useMemo(() => {
     const map: Record<string, number> = {}
-    for (const place of places) {
+    for (const place of cityScopedPlaces) {
       map[place.category_id] = (map[place.category_id] ?? 0) + 1
     }
     return map
-  }, [places])
+  }, [cityScopedPlaces])
 
   const categoryPlaces = useMemo(() => {
+    const sortByOrderThenNewest = (a: Place, b: Place) => {
+      if (a.sort_order !== b.sort_order) return a.sort_order - b.sort_order
+      return b.created_at.localeCompare(a.created_at)
+    }
+
     if (isAllCategories) {
-      return [...places].sort((a, b) => {
+      return [...cityScopedPlaces].sort((a, b) => {
         const catA = categoryMap.get(a.category_id)?.sort_order ?? 0
         const catB = categoryMap.get(b.category_id)?.sort_order ?? 0
         if (catA !== catB) return catA - catB
-        return a.sort_order - b.sort_order
+        return sortByOrderThenNewest(a, b)
       })
     }
-    return places
+    return cityScopedPlaces
       .filter((p) => p.category_id === activeCategory?.id)
-      .sort((a, b) => a.sort_order - b.sort_order)
-  }, [places, isAllCategories, activeCategory?.id, categoryMap])
+      .sort(sortByOrderThenNewest)
+  }, [cityScopedPlaces, isAllCategories, activeCategory?.id, categoryMap])
 
   const filterCounts = useMemo(() => {
     const visited = categoryPlaces.filter((p) => p.is_visited).length
@@ -258,6 +268,12 @@ function App() {
       ) {
         return false
       }
+      if (
+        addedByFilter !== 'all' &&
+        place.added_by.trim().toLowerCase() !== addedByFilter.toLowerCase()
+      ) {
+        return false
+      }
       if (!q) return true
 
       const haystack = [
@@ -271,7 +287,7 @@ function App() {
 
       return haystack.includes(q)
     })
-  }, [categoryPlaces, query, visitFilter])
+  }, [categoryPlaces, query, visitFilter, addedByFilter])
 
   const groupedFilteredPlaces = useMemo(() => {
     if (!isAllCategories) return []
@@ -303,7 +319,7 @@ function App() {
     place: Place,
     targetCategoryId: string,
   ) => {
-    if (place.category_id === targetCategoryId) return
+    if (!canEdit || place.category_id === targetCategoryId) return
 
     const targetCategory = categories.find((c) => c.id === targetCategoryId)
     const targetPlaces = places.filter(
@@ -311,7 +327,7 @@ function App() {
     )
     const nextOrder =
       targetPlaces.length > 0
-        ? Math.max(...targetPlaces.map((p) => p.sort_order)) + 1
+        ? Math.min(...targetPlaces.map((p) => p.sort_order)) - 1
         : 0
 
     const nextPlaces = places.map((p) =>
@@ -336,71 +352,16 @@ function App() {
     }
   }
 
-  const handleDragStart = (event: DragStartEvent) => {
-    setActiveDragPlaceId(String(event.active.id))
-    triggerHaptic(15)
-  }
-
-  const handleDragEnd = async (event: DragEndEvent) => {
-    setActiveDragPlaceId(null)
-    const { active, over } = event
-    if (!over) return
-
-    const draggedPlace = places.find((p) => p.id === String(active.id))
-    if (!draggedPlace) return
-
-    const overId = String(over.id)
-    const droppedCategoryId = parseCategoryDropId(overId)
-
-    if (droppedCategoryId) {
-      await handleMoveToCategory(draggedPlace, droppedCategoryId)
-      return
-    }
-
-    if (active.id === over.id) return
-
-    const targetPlace = places.find((p) => p.id === overId)
-    if (!targetPlace || targetPlace.category_id !== draggedPlace.category_id) {
-      return
-    }
-
-    const sameCategoryList = places
-      .filter((p) => p.category_id === draggedPlace.category_id)
-      .sort((a, b) => a.sort_order - b.sort_order)
-
-    const oldIndex = sameCategoryList.findIndex(
-      (p) => p.id === String(active.id),
-    )
-    const newIndex = sameCategoryList.findIndex((p) => p.id === overId)
-    if (oldIndex === -1 || newIndex === -1) return
-
-    const reorderedCategory = arrayMove(
-      sameCategoryList,
-      oldIndex,
-      newIndex,
-    ).map((item, idx) => ({ ...item, sort_order: idx }))
-    const reorderedMap = new Map(reorderedCategory.map((p) => [p.id, p]))
-    const nextPlaces = places.map((p) => reorderedMap.get(p.id) ?? p)
-
-    setPlaces(nextPlaces)
-    triggerHaptic(12)
-    showToast('Urutan berhasil disimpan!')
-
-    try {
-      await persistPlaceOrder(nextPlaces)
-    } catch {
-      setPlaces(places)
-      showToast('Gagal menyimpan urutan.')
-    }
-  }
-
   const handleCreatePlace = async (input: NewPlaceInput) => {
     const created = await createPlace(input)
-    setPlaces((prev) => [...prev, created])
+    setPlaces((prev) => [created, ...prev])
     if (!isAllCategories) {
       setActiveCategoryId(created.category_id)
     }
-    showToast(`${created.name} berhasil ditambahkan!`)
+    if (created.city && cityFilter !== 'all' && created.city !== cityFilter) {
+      setCityFilter(created.city)
+    }
+    showToast(`${created.name} berhasil ditambahkan di urutan atas!`)
   }
 
   const handleUpdatePlace = async (id: string, patch: UpdatePlaceInput) => {
@@ -424,195 +385,261 @@ function App() {
   }
 
   const openAddDrawer = () => {
+    if (!canEdit) return
     setEditingPlace(null)
     setIsPlaceDrawerOpen(true)
   }
 
   const openEditDrawer = (place: Place) => {
+    if (!canEdit) return
     setEditingPlace(place)
     setIsPlaceDrawerOpen(true)
   }
 
-  const dragPlaceCategory = activeDragPlace
-    ? categoryMap.get(activeDragPlace.category_id)
-    : undefined
+  const defaultDrawerCity: CityId =
+    cityFilter === 'jakarta' ? 'jakarta' : 'makassar'
 
   return (
     <div className="flex min-h-dvh w-full flex-col bg-cream text-ink">
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragCancel={() => setActiveDragPlaceId(null)}
-      >
-        <div className="mx-auto flex w-full max-w-md flex-1 flex-col md:max-w-3xl lg:max-w-5xl">
-          {/* Top Appetizing Pop-Art Header */}
-          <header className="px-4 pt-4 pb-3">
-            <div className="pop-card mesh-appetizing rounded-3xl p-4 sm:p-5">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-mango px-2.5 py-0.5 text-xs font-extrabold tracking-wide text-ink shadow-pop-sm">
-                      <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-                      <span>MAKASSAR LIST</span>
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col md:max-w-3xl lg:max-w-5xl">
+        {/* Top Appetizing Pop-Art Header */}
+        <header className="px-4 pt-4 pb-3">
+          <div className="pop-card mesh-appetizing rounded-3xl p-4 sm:p-5">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-mango px-2.5 py-0.5 text-xs font-extrabold tracking-wide text-ink shadow-pop-sm">
+                    <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span>
+                      {cityFilter === 'jakarta'
+                        ? 'JAKARTA • BLOK M'
+                        : cityFilter === 'all'
+                          ? 'MKS & JKT'
+                          : 'MAKASSAR LIST'}
                     </span>
-                    <span className="rounded-full border border-ink/40 bg-paper/80 px-2 py-0.5 text-[11px] font-bold text-ink-muted">
-                      {isSupabaseConfigured ? 'Realtime Sync' : 'Mode Lokal'}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setIsIdentityModalOpen(true)}
-                      className="inline-flex items-center gap-1 rounded-full border border-ink bg-paper px-2 py-0.5 text-[11px] font-extrabold text-ink hover:bg-cream-dark"
-                    >
-                      <UserRound className="h-3 w-3" aria-hidden="true" />
-                      <span>{friendName || 'Isi Nama'}</span>
-                    </button>
-                    <a
-                      href="https://instagram.com/weareremps"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 rounded-full border border-ink bg-rose/20 px-2 py-0.5 text-[11px] font-extrabold text-ink hover:bg-rose/35"
-                    >
-                      <InstagramIcon className="h-3 w-3" />
-                      <span>@weareremps</span>
-                    </a>
-                  </div>
-
-                  <h1 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
-                    Isi Perut
-                  </h1>
-                  <p className="mt-0.5 text-sm font-medium text-ink-muted">
-                    {activeDragPlace
-                      ? 'Seret ke kategori di atas atau atur urutannya!'
-                      : `Mau makan di mana hari ini? (${places.length} tempat tersimpan)`}
-                  </p>
-                </div>
-
-                <CategorySticker
-                  colorToken={activeCategory?.color_token ?? 'red'}
-                  className="h-14 w-14 shrink-0 rotate-3 rounded-2xl shadow-pop"
-                />
-              </div>
-            </div>
-          </header>
-
-          {/* Offline Banner */}
-          {isOffline && (
-            <div className="mx-4 mb-2 flex items-center gap-2 rounded-2xl border-2 border-ink bg-cream-dark px-3.5 py-2 text-xs font-bold text-ink">
-              <WifiOff className="h-4 w-4 shrink-0 text-tomato" />
-              <span>
-                Kamu sedang offline — menampilkan daftar terakhir yang tersimpan.
-              </span>
-            </div>
-          )}
-
-          {/* PWA Install Banner */}
-          <PWAInstallBanner />
-
-          {/* Sticky Category Switcher, View Mode Toggle & Search */}
-          <div className="sticky top-0 z-20 bg-cream/95 px-4 pt-1 pb-3 backdrop-blur-xs">
-            <div className="flex items-center justify-between gap-2">
-              <div className="min-w-0 flex-1">
-                <CategoryTabs
-                  categories={categories}
-                  activeCategoryId={activeCategoryId}
-                  countsByCategory={countsByCategory}
-                  totalCount={places.length}
-                  isDraggingPlace={Boolean(activeDragPlace)}
-                  onSelectCategory={setActiveCategoryId}
-                  onOpenAddCategory={() => setIsCategoryModalOpen(true)}
-                />
-              </div>
-
-              {/* List / Map Toggle */}
-              <div
-                role="group"
-                aria-label="Mode tampilan"
-                className="flex shrink-0 items-center rounded-full border-2 border-ink bg-paper p-0.5 shadow-pop-sm"
-              >
-                <button
-                  type="button"
-                  onClick={() => setViewMode('list')}
-                  aria-pressed={viewMode === 'list'}
-                  aria-label="Tampilan Daftar"
-                  className={cn(
-                    'flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors',
-                    viewMode === 'list'
-                      ? 'bg-ink text-cream'
-                      : 'text-ink hover:bg-cream-dark',
-                  )}
-                >
-                  <List className="h-4 w-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewMode('map')}
-                  aria-pressed={viewMode === 'map'}
-                  aria-label="Tampilan Peta Makassar"
-                  className={cn(
-                    'flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors',
-                    viewMode === 'map'
-                      ? 'bg-pandan text-ink'
-                      : 'text-ink hover:bg-cream-dark',
-                  )}
-                >
-                  <MapIcon className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-
-            <SearchFilterBar
-              query={query}
-              onQueryChange={setQuery}
-              visitFilter={visitFilter}
-              onVisitFilterChange={setVisitFilter}
-              counts={filterCounts}
-            />
-          </div>
-
-          {/* Main Content Area */}
-          <main className="flex-1 px-4 pb-28">
-            {isLoading ? (
-              <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
-                {[0, 1, 2].map((skeleton) => (
-                  <div
-                    key={skeleton}
-                    className="pop-card h-36 animate-pulse rounded-2xl bg-cream-dark/50"
-                  />
-                ))}
-              </div>
-            ) : viewMode === 'map' ? (
-              <MakassarMapView
-                places={filteredPlaces}
-                categories={categories}
-                onEditPlace={openEditDrawer}
-              />
-            ) : filteredPlaces.length === 0 ? (
-              <div className="pop-card flex flex-col items-center rounded-3xl px-6 py-10 text-center">
-                <EmptyPlateDoodle className="h-24 w-24" />
-                <h2 className="mt-3 font-display text-xl font-extrabold text-ink">
-                  {query || visitFilter !== 'all'
-                    ? 'Tidak ada tempat yang cocok'
-                    : 'Kategori ini masih kosong'}
-                </h2>
-                <p className="mt-1 max-w-xs text-sm text-ink-muted">
-                  {query || visitFilter !== 'all'
-                    ? 'Coba kata kunci lain atau reset filter kunjungan.'
-                    : 'Yuk tambahkan rekomendasi tempat makan atau nongki andalanmu!'}
-                </p>
-                {query || visitFilter !== 'all' ? (
+                  </span>
+                  <span className="rounded-full border border-ink/40 bg-paper/80 px-2 py-0.5 text-[11px] font-bold text-ink-muted">
+                    {isSupabaseConfigured ? 'Realtime Sync' : 'Mode Lokal'}
+                  </span>
                   <button
                     type="button"
-                    onClick={() => {
-                      setQuery('')
-                      setVisitFilter('all')
-                    }}
-                    className="pop-press mt-4 rounded-2xl border-2 border-ink bg-mango px-4 py-2 text-xs font-extrabold text-ink shadow-pop-sm"
+                    onClick={() => setIsIdentityModalOpen(true)}
+                    className="inline-flex items-center gap-1 rounded-full border border-ink bg-paper px-2 py-0.5 text-[11px] font-extrabold text-ink hover:bg-cream-dark"
                   >
-                    Reset Filter
+                    <UserRound className="h-3 w-3" aria-hidden="true" />
+                    <span>
+                      {friendName || 'Isi Nama'}
+                      {!canEdit ? ' (Tamu)' : ''}
+                    </span>
                   </button>
-                ) : (
+                  <a
+                    href="https://instagram.com/weareremps"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded-full border border-ink bg-rose/20 px-2 py-0.5 text-[11px] font-extrabold text-ink hover:bg-rose/35"
+                  >
+                    <InstagramIcon className="h-3 w-3" />
+                    <span>@weareremps</span>
+                  </a>
+                </div>
+
+                <h1 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+                  Isi Perut
+                </h1>
+                <p className="mt-0.5 text-sm font-medium text-ink-muted">
+                  Mau makan di mana hari ini? ({cityScopedPlaces.length} tempat)
+                </p>
+              </div>
+
+              <CategorySticker
+                colorToken={activeCategory?.color_token ?? 'red'}
+                className="h-14 w-14 shrink-0 rotate-3 rounded-2xl shadow-pop"
+              />
+            </div>
+
+            {/* City Switcher + Gacha SpinWheel CTA */}
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t-2 border-dashed border-ink/15 pt-3">
+              <div
+                role="group"
+                aria-label="Pilih Kota"
+                className="flex items-center gap-1 rounded-full border-2 border-ink bg-paper p-0.5 shadow-pop-sm"
+              >
+                {(
+                  [
+                    { id: 'makassar', label: '📍 Makassar' },
+                    { id: 'jakarta', label: '🏙️ JKT Blok M' },
+                    { id: 'all', label: '🌏 Semua' },
+                  ] as const
+                ).map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setCityFilter(item.id)}
+                    aria-pressed={cityFilter === item.id}
+                    className={cn(
+                      'rounded-full px-2.5 py-1 text-[11px] font-extrabold transition-colors',
+                      cityFilter === item.id
+                        ? 'bg-ink text-cream'
+                        : 'text-ink hover:bg-cream-dark',
+                    )}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsSpinWheelOpen(true)}
+                className="pop-press inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-mango px-3 py-1.5 text-xs font-extrabold text-ink shadow-pop-sm hover:bg-tangerine"
+              >
+                <Dices className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>Gacha!</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Offline Banner */}
+        {isOffline && (
+          <div className="mx-4 mb-2 flex items-center gap-2 rounded-2xl border-2 border-ink bg-cream-dark px-3.5 py-2 text-xs font-bold text-ink">
+            <WifiOff className="h-4 w-4 shrink-0 text-tomato" />
+            <span>
+              Kamu sedang offline — menampilkan daftar terakhir yang tersimpan.
+            </span>
+          </div>
+        )}
+
+        {/* PWA Install Banner */}
+        <PWAInstallBanner />
+
+        {/* Sticky Category Switcher, 3-Mode View Switcher & Search */}
+        <div className="sticky top-0 z-20 bg-cream/95 px-4 pt-1 pb-3 backdrop-blur-xs">
+          <div className="flex items-center justify-between gap-2">
+            <div className="min-w-0 flex-1">
+              <CategoryTabs
+                categories={categories}
+                activeCategoryId={activeCategoryId}
+                countsByCategory={countsByCategory}
+                totalCount={cityScopedPlaces.length}
+                canEdit={canEdit}
+                onSelectCategory={setActiveCategoryId}
+                onOpenAddCategory={() => setIsCategoryModalOpen(true)}
+              />
+            </div>
+
+            {/* Card / Compact List / Map Toggle */}
+            <div
+              role="group"
+              aria-label="Mode tampilan"
+              className="flex shrink-0 items-center rounded-full border-2 border-ink bg-paper p-0.5 shadow-pop-sm"
+            >
+              <button
+                type="button"
+                onClick={() => setViewMode('list')}
+                aria-pressed={viewMode === 'list'}
+                aria-label="Tampilan Kartu"
+                title="Tampilan Kartu"
+                className={cn(
+                  'flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors',
+                  viewMode === 'list'
+                    ? 'bg-ink text-cream'
+                    : 'text-ink hover:bg-cream-dark',
+                )}
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('compact')}
+                aria-pressed={viewMode === 'compact'}
+                aria-label="Tampilan List Padat"
+                title="List Padat (10+ baris)"
+                className={cn(
+                  'flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors',
+                  viewMode === 'compact'
+                    ? 'bg-mango text-ink'
+                    : 'text-ink hover:bg-cream-dark',
+                )}
+              >
+                <List className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('map')}
+                aria-pressed={viewMode === 'map'}
+                aria-label="Tampilan Peta"
+                title="Tampilan Peta"
+                className={cn(
+                  'flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors',
+                  viewMode === 'map'
+                    ? 'bg-pandan text-ink'
+                    : 'text-ink hover:bg-cream-dark',
+                )}
+              >
+                <MapIcon className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          <SearchFilterBar
+            query={query}
+            onQueryChange={setQuery}
+            visitFilter={visitFilter}
+            onVisitFilterChange={setVisitFilter}
+            addedByFilter={addedByFilter}
+            addedByOptions={addedByOptions}
+            onAddedByFilterChange={setAddedByFilter}
+            counts={filterCounts}
+          />
+        </div>
+
+        {/* Main Content Area */}
+        <main className="flex-1 px-4 pb-28">
+          {isLoading ? (
+            <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
+              {[0, 1, 2].map((skeleton) => (
+                <div
+                  key={skeleton}
+                  className="pop-card h-36 animate-pulse rounded-2xl bg-cream-dark/50"
+                />
+              ))}
+            </div>
+          ) : viewMode === 'map' ? (
+            <MakassarMapView
+              places={filteredPlaces}
+              categories={categories}
+              cityFilter={cityFilter}
+              canEdit={canEdit}
+              onEditPlace={openEditDrawer}
+            />
+          ) : filteredPlaces.length === 0 ? (
+            <div className="pop-card flex flex-col items-center rounded-3xl px-6 py-10 text-center">
+              <EmptyPlateDoodle className="h-24 w-24" />
+              <h2 className="mt-3 font-display text-xl font-extrabold text-ink">
+                {query || visitFilter !== 'all' || addedByFilter !== 'all'
+                  ? 'Tidak ada tempat yang cocok'
+                  : 'Kategori ini masih kosong'}
+              </h2>
+              <p className="mt-1 max-w-xs text-sm text-ink-muted">
+                {query || visitFilter !== 'all' || addedByFilter !== 'all'
+                  ? 'Coba kata kunci lain atau reset filter.'
+                  : 'Yuk tambahkan rekomendasi tempat makan atau nongki andalanmu!'}
+              </p>
+              {query || visitFilter !== 'all' || addedByFilter !== 'all' ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery('')
+                    setVisitFilter('all')
+                    setAddedByFilter('all')
+                  }}
+                  className="pop-press mt-4 rounded-2xl border-2 border-ink bg-mango px-4 py-2 text-xs font-extrabold text-ink shadow-pop-sm"
+                >
+                  Reset Filter
+                </button>
+              ) : (
+                canEdit && (
                   <button
                     type="button"
                     onClick={openAddDrawer}
@@ -621,95 +648,119 @@ function App() {
                     <Plus className="h-4 w-4" strokeWidth={2.75} />
                     <span>Tambah Tempat Pertama</span>
                   </button>
-                )}
-              </div>
-            ) : isAllCategories ? (
-              <div className="space-y-6">
-                {groupedFilteredPlaces.map(({ category, items }) => {
-                  const theme = CATEGORY_THEMES[category.color_token]
-                  return (
-                    <section key={category.id} className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div
+                )
+              )}
+            </div>
+          ) : isAllCategories ? (
+            <div className="space-y-6">
+              {groupedFilteredPlaces.map(({ category, items }) => {
+                const theme = CATEGORY_THEMES[category.color_token]
+                return (
+                  <section key={category.id} className="space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <div
+                        className={cn(
+                          'inline-flex items-center gap-2 rounded-full border-2 border-ink px-3.5 py-1 text-sm font-extrabold shadow-pop-sm',
+                          theme.pillActive,
+                        )}
+                      >
+                        <span>{category.emoji}</span>
+                        <span>{category.name}</span>
+                        <span
                           className={cn(
-                            'inline-flex items-center gap-2 rounded-full border-2 border-ink px-3.5 py-1 text-sm font-extrabold shadow-pop-sm',
-                            theme.pillActive,
+                            'rounded-full px-1.5 py-0.5 text-xs font-extrabold',
+                            theme.pillBadge,
                           )}
                         >
-                          <span>{category.emoji}</span>
-                          <span>{category.name}</span>
-                          <span
-                            className={cn(
-                              'rounded-full px-1.5 py-0.5 text-xs font-extrabold',
-                              theme.pillBadge,
-                            )}
-                          >
-                            {items.length}
-                          </span>
-                        </div>
+                          {items.length}
+                        </span>
                       </div>
+                    </div>
 
-                      <SortableContext
-                        items={items.map((p) => p.id)}
-                        strategy={rectSortingStrategy}
-                      >
-                        <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
-                          {items.map((place) => (
-                            <PlaceCard
-                              key={place.id}
-                              place={place}
-                              colorToken={category.color_token}
-                              categories={categories}
-                              onToggleVisited={handleToggleVisited}
-                              onEdit={openEditDrawer}
-                              onMoveToCategory={handleMoveToCategory}
-                            />
-                          ))}
-                        </div>
-                      </SortableContext>
-                    </section>
-                  )
-                })}
-              </div>
-            ) : (
-              <SortableContext
-                items={filteredPlaces.map((p) => p.id)}
-                strategy={rectSortingStrategy}
-              >
-                <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
-                  {filteredPlaces.map((place) => (
-                    <PlaceCard
-                      key={place.id}
-                      place={place}
-                      colorToken={activeCategory?.color_token ?? 'red'}
-                      categories={categories}
-                      onToggleVisited={handleToggleVisited}
-                      onEdit={openEditDrawer}
-                      onMoveToCategory={handleMoveToCategory}
-                    />
-                  ))}
-                </div>
-              </SortableContext>
-            )}
+                    {viewMode === 'compact' ? (
+                      <div className="space-y-2">
+                        {items.map((place) => (
+                          <CompactPlaceRow
+                            key={place.id}
+                            place={place}
+                            colorToken={category.color_token}
+                            categoryEmoji={category.emoji}
+                            canEdit={canEdit}
+                            onToggleVisited={handleToggleVisited}
+                            onEdit={openEditDrawer}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
+                        {items.map((place) => (
+                          <PlaceCard
+                            key={place.id}
+                            place={place}
+                            colorToken={category.color_token}
+                            categories={categories}
+                            canEdit={canEdit}
+                            onToggleVisited={handleToggleVisited}
+                            onEdit={openEditDrawer}
+                            onMoveToCategory={handleMoveToCategory}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </section>
+                )
+              })}
+            </div>
+          ) : viewMode === 'compact' ? (
+            <div className="space-y-2">
+              {filteredPlaces.map((place) => (
+                <CompactPlaceRow
+                  key={place.id}
+                  place={place}
+                  colorToken={activeCategory?.color_token ?? 'red'}
+                  categoryEmoji={activeCategory?.emoji ?? '🍽️'}
+                  canEdit={canEdit}
+                  onToggleVisited={handleToggleVisited}
+                  onEdit={openEditDrawer}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
+              {filteredPlaces.map((place) => (
+                <PlaceCard
+                  key={place.id}
+                  place={place}
+                  colorToken={activeCategory?.color_token ?? 'red'}
+                  categories={categories}
+                  canEdit={canEdit}
+                  onToggleVisited={handleToggleVisited}
+                  onEdit={openEditDrawer}
+                  onMoveToCategory={handleMoveToCategory}
+                />
+              ))}
+            </div>
+          )}
 
-            {/* Social Footer */}
-            <footer className="mt-8 flex flex-col items-center gap-1.5 text-center">
-              <a
-                href="https://instagram.com/weareremps"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="pop-press inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-paper px-3.5 py-1.5 text-xs font-extrabold text-ink shadow-pop-sm hover:bg-mango/60"
-              >
-                <InstagramIcon className="h-3.5 w-3.5" />
-                <span>@weareremps</span>
-              </a>
-              <p className="text-[11px] font-semibold text-ink-muted">
-                Isi Perut • Makassar Food & Hangout List
-              </p>
-            </footer>
-          </main>
+          {/* Social Footer */}
+          <footer className="mt-8 flex flex-col items-center gap-1.5 text-center">
+            <a
+              href="https://instagram.com/weareremps"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pop-press inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-paper px-3.5 py-1.5 text-xs font-extrabold text-ink shadow-pop-sm hover:bg-mango/60"
+            >
+              <InstagramIcon className="h-3.5 w-3.5" />
+              <span>@weareremps</span>
+            </a>
+            <p className="text-[11px] font-semibold text-ink-muted">
+              Isi Perut • Makassar &amp; Jakarta Food List
+            </p>
+          </footer>
+        </main>
 
-          {/* Thumb-Zone Floating Action Button */}
+        {/* Thumb-Zone Floating Action Button (only for editors) */}
+        {canEdit && (
           <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 mx-auto flex max-w-md justify-end px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] md:max-w-3xl lg:max-w-5xl">
             <button
               type="button"
@@ -720,23 +771,8 @@ function App() {
               <span>Tambah Tempat</span>
             </button>
           </div>
-        </div>
-
-        {/* Tilted DragOverlay */}
-        <DragOverlay>
-          {activeDragPlace ? (
-            <PlaceCard
-              place={activeDragPlace}
-              colorToken={
-                dragPlaceCategory?.color_token ??
-                activeCategory?.color_token ??
-                'red'
-              }
-              isDragOverlay
-            />
-          ) : null}
-        </DragOverlay>
-      </DndContext>
+        )}
+      </div>
 
       {/* Mobile-style Toast Notification */}
       <AnimatePresence>
@@ -763,8 +799,11 @@ function App() {
         isOpen={isPlaceDrawerOpen}
         categories={categories}
         defaultCategoryId={
-          activeCategory?.id ?? categories[0]?.id ?? '11111111-1111-4111-8111-111111111101'
+          activeCategory?.id ??
+          categories[0]?.id ??
+          '11111111-1111-4111-8111-111111111101'
         }
+        defaultCity={defaultDrawerCity}
         defaultAddedBy={friendName}
         editingPlace={editingPlace}
         onClose={() => setIsPlaceDrawerOpen(false)}
@@ -779,16 +818,38 @@ function App() {
         onCreate={handleCreateCategory}
       />
 
+      <SpinWheelModal
+        isOpen={isSpinWheelOpen}
+        categories={categories}
+        places={cityScopedPlaces}
+        initialCategoryId={activeCategoryId}
+        onClose={() => setIsSpinWheelOpen(false)}
+      />
+
       <FriendIdentityModal
         isOpen={isIdentityModalOpen}
         initialName={friendName}
         canDismiss={Boolean(friendName)}
-        onSave={(saved) => {
-          setFriendName(saved)
+        onSave={(savedName, nextCanEdit) => {
+          setFriendName(savedName)
+          setCanEdit(nextCanEdit)
           setIsIdentityModalOpen(false)
-          showToast(`Halo ${saved}! Siap isi perut?`)
+          if (shouldShowWhatsNew()) {
+            setIsWhatsNewOpen(true)
+          } else {
+            showToast(
+              nextCanEdit
+                ? `Halo ${savedName}! Siap isi perut?`
+                : `Masuk sebagai Tamu (lihat & Gacha)`,
+            )
+          }
         }}
         onClose={() => setIsIdentityModalOpen(false)}
+      />
+
+      <WhatsNewModal
+        isOpen={isWhatsNewOpen && !isIdentityModalOpen}
+        onAcknowledge={() => setIsWhatsNewOpen(false)}
       />
     </div>
   )

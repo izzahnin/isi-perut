@@ -28,21 +28,61 @@ export const supabase: SupabaseClient<Database> | null = isSupabaseConfigured
   ? createClient<Database>(supabaseUrl, supabaseAnonKey)
   : null
 
-const STORAGE_CATEGORIES_KEY = 'isi-perut:categories:v10'
-const STORAGE_PLACES_KEY = 'isi-perut:places:v10'
+const STORAGE_CATEGORIES_KEY = 'isi-perut:categories:v11'
+const STORAGE_PLACES_KEY = 'isi-perut:places:v11'
 const STORAGE_VISITED_KEY = 'isi-perut:visited:v1'
 
 export interface FriendCheckResult {
   status: 'created' | 'exists' | 'local'
   canonicalName: string
+  canEdit: boolean
+}
+
+const DEFAULT_EDITOR_ALLOWLIST = ['pije', 'caca', 'raka', 'dina']
+
+function getEnvEditorAllowlist(): string[] | null {
+  const raw = import.meta.env.VITE_EDITOR_NAMES?.trim()
+  if (!raw) return null
+  return raw
+    .split(',')
+    .map((n: string) => n.trim().toLowerCase())
+    .filter(Boolean)
+}
+
+export async function isFriendAllowedToEdit(name: string): Promise<boolean> {
+  const clean = name.trim().toLowerCase()
+  if (!clean) return false
+
+  const envAllowlist = getEnvEditorAllowlist()
+  if (envAllowlist) {
+    return envAllowlist.includes(clean)
+  }
+
+  if (!supabase) {
+    return DEFAULT_EDITOR_ALLOWLIST.includes(clean)
+  }
+
+  const escapedPattern = name.trim().replace(/[%_\\]/g, '\\$&')
+  const { data } = await supabase
+    .from('friends')
+    .select('name')
+    .ilike('name', escapedPattern)
+    .maybeSingle()
+
+  return Boolean(data)
 }
 
 export async function registerOrCheckFriendName(
   rawName: string,
 ): Promise<FriendCheckResult> {
   const cleanName = rawName.trim().replace(/\s+/g, ' ')
+  const envAllowlist = getEnvEditorAllowlist()
+
   if (!supabase) {
-    return { status: 'local', canonicalName: cleanName }
+    const canEdit = envAllowlist
+      ? envAllowlist.includes(cleanName.toLowerCase())
+      : true
+    return { status: 'local', canonicalName: cleanName, canEdit }
   }
 
   // Escape SQL LIKE wildcards so % or _ in names match literally, case-insensitively
@@ -54,14 +94,22 @@ export async function registerOrCheckFriendName(
     .maybeSingle()
 
   if (existing) {
-    return { status: 'exists', canonicalName: existing.name }
+    const canEdit = envAllowlist
+      ? envAllowlist.includes(existing.name.toLowerCase())
+      : true
+    return { status: 'exists', canonicalName: existing.name, canEdit }
+  }
+
+  // If allowlist is active and name is not in it, treat as viewer without registering
+  if (envAllowlist && !envAllowlist.includes(cleanName.toLowerCase())) {
+    return { status: 'created', canonicalName: cleanName, canEdit: false }
   }
 
   const { error } = await supabase.from('friends').insert({ name: cleanName })
   if (error) {
-    return { status: 'exists', canonicalName: cleanName }
+    return { status: 'exists', canonicalName: cleanName, canEdit: true }
   }
-  return { status: 'created', canonicalName: cleanName }
+  return { status: 'created', canonicalName: cleanName, canEdit: true }
 }
 
 export function getLocalVisitedMap(): Record<string, boolean> {
@@ -258,9 +306,10 @@ export async function createPlace(input: NewPlaceInput): Promise<Place> {
   const categoryPlaces = current.filter(
     (p) => p.category_id === input.category_id,
   )
+  // Place newly added spots at the very top (min sort_order - 1)
   const nextOrder =
     categoryPlaces.length > 0
-      ? Math.max(...categoryPlaces.map((p) => p.sort_order)) + 1
+      ? Math.min(...categoryPlaces.map((p) => p.sort_order)) - 1
       : 0
 
   const newPlace: Place = {
@@ -269,6 +318,7 @@ export async function createPlace(input: NewPlaceInput): Promise<Place> {
     name: input.name.trim(),
     notes: input.notes ?? [],
     area: input.area?.trim() || null,
+    city: input.city ?? 'makassar',
     lat: input.lat ?? null,
     lng: input.lng ?? null,
     maps_url: input.maps_url ?? null,
@@ -279,7 +329,7 @@ export async function createPlace(input: NewPlaceInput): Promise<Place> {
   }
 
   if (!supabase) {
-    const next = [...current, newPlace]
+    const next = [newPlace, ...current]
     writeLocal(STORAGE_PLACES_KEY, next)
     return newPlace
   }
@@ -291,6 +341,7 @@ export async function createPlace(input: NewPlaceInput): Promise<Place> {
       name: newPlace.name,
       notes: newPlace.notes,
       area: newPlace.area,
+      city: newPlace.city,
       lat: newPlace.lat,
       lng: newPlace.lng,
       maps_url: newPlace.maps_url,

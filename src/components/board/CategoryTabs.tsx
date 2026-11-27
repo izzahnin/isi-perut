@@ -13,6 +13,7 @@ interface CategoryTabsProps {
   activeCategoryId: string
   countsByCategory: Record<string, number>
   totalCount: number
+  canEdit?: boolean
   isDraggingPlace?: boolean
   onSelectCategory: (categoryId: string) => void
   onOpenAddCategory: () => void
@@ -79,6 +80,7 @@ export function CategoryTabs({
   activeCategoryId,
   countsByCategory,
   totalCount,
+  canEdit = true,
   isDraggingPlace = false,
   onSelectCategory,
   onOpenAddCategory,
@@ -125,15 +127,17 @@ export function CategoryTabs({
         />
       ))}
 
-      <motion.button
-        type="button"
-        whileTap={{ scale: 0.94 }}
-        onClick={onOpenAddCategory}
-        className="pop-press inline-flex shrink-0 items-center gap-1 rounded-full border-2 border-dashed border-ink bg-cream-dark px-3 py-2 text-xs font-extrabold text-ink hover:bg-mango/50"
-      >
-        <Plus className="h-3.5 w-3.5" strokeWidth={2.75} aria-hidden="true" />
-        <span>Kategori</span>
-      </motion.button>
+      {canEdit && (
+        <motion.button
+          type="button"
+          whileTap={{ scale: 0.94 }}
+          onClick={onOpenAddCategory}
+          className="pop-press inline-flex shrink-0 items-center gap-1 rounded-full border-2 border-dashed border-ink bg-cream-dark px-3 py-2 text-xs font-extrabold text-ink hover:bg-mango/50"
+        >
+          <Plus className="h-3.5 w-3.5" strokeWidth={2.75} aria-hidden="true" />
+          <span>Kategori</span>
+        </motion.button>
+      )}
     </nav>
   )
 }

@@ -1,10 +1,7 @@
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import { motion } from 'framer-motion'
 import {
   ArrowRightLeft,
   Check,
-  GripVertical,
   MapPin,
   MoreVertical,
   Pencil,
@@ -19,7 +16,7 @@ interface PlaceCardProps {
   place: Place
   colorToken: CategoryColorToken
   categories?: Category[]
-  isDragOverlay?: boolean
+  canEdit?: boolean
   onToggleVisited?: (place: Place) => void
   onEdit?: (place: Place) => void
   onMoveToCategory?: (place: Place, targetCategoryId: string) => void
@@ -36,26 +33,13 @@ export function PlaceCard({
   place,
   colorToken,
   categories = [],
-  isDragOverlay = false,
+  canEdit = true,
   onToggleVisited,
   onEdit,
   onMoveToCategory,
 }: PlaceCardProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
-
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: place.id,
-    disabled: isDragOverlay,
-    data: { type: 'place', place },
-  })
 
   useEffect(() => {
     if (!menuOpen) return
@@ -74,13 +58,6 @@ export function PlaceCard({
       window.removeEventListener('keydown', handleEscape)
     }
   }, [menuOpen])
-
-  const style = isDragOverlay
-    ? undefined
-    : {
-        transform: CSS.Transform.toString(transform),
-        transition: transition ?? 'transform 220ms cubic-bezier(0.22, 1, 0.36, 1)',
-      }
 
   const theme = CATEGORY_THEMES[colorToken]
   const hasArea = Boolean(place.area?.trim())
@@ -101,18 +78,12 @@ export function PlaceCard({
 
   return (
     <article
-      ref={isDragOverlay ? undefined : setNodeRef}
-      style={style}
       className={cn(
-        'relative rounded-2xl p-4',
-        isDragging
-          ? 'border-2 border-dashed border-ink/30 bg-cream-dark/40 shadow-none'
-          : cn('pop-card', place.is_visited && 'bg-cream-dark/45'),
-        isDragOverlay && 'rotate-2 scale-[1.03] shadow-pop-lg cursor-grabbing',
+        'pop-card relative rounded-2xl p-4',
+        place.is_visited && 'bg-cream-dark/45',
       )}
     >
-      {/* Hide inner content when dragging so the card follows cursor cleanly via DragOverlay without doubling */}
-      <div className={cn(isDragging && 'invisible')}>
+      <div>
         {/* Top category color accent bar clipped to inner card radius so dropdown menu stays unclipped */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[14px]">
           <div className={cn('h-1.5 w-full', theme.cardStripe)} />
@@ -145,7 +116,7 @@ export function PlaceCard({
               {place.name}
             </h2>
 
-            {isIncomplete && !isDragOverlay && onEdit && (
+            {canEdit && isIncomplete && onEdit && (
               <button
                 type="button"
                 onClick={() => onEdit(place)}
@@ -156,76 +127,68 @@ export function PlaceCard({
             )}
           </div>
 
-          {/* Drag handle & Quick Move / Edit Menu */}
-          <div className="relative flex shrink-0 items-center gap-1" ref={menuRef}>
-            <button
-              type="button"
-              {...attributes}
-              {...listeners}
-              aria-label={`Geser atau urutkan ${place.name}`}
-              className="touch-none flex h-8 w-8 cursor-grab items-center justify-center rounded-xl border-2 border-ink bg-cream-dark text-ink shadow-pop-sm active:cursor-grabbing"
-            >
-              <GripVertical className="h-4 w-4" aria-hidden="true" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMenuOpen((prev) => !prev)}
-              aria-label={`Menu opsi ${place.name}`}
-              aria-expanded={menuOpen}
-              className="pop-press flex h-8 w-8 items-center justify-center rounded-xl border-2 border-ink bg-paper text-ink shadow-pop-sm hover:bg-cream-dark"
-            >
-              <MoreVertical className="h-4 w-4" aria-hidden="true" />
-            </button>
-
-            {menuOpen && !isDragOverlay && (
-              <div
-                role="menu"
-                className="pop-card absolute right-0 top-10 z-30 w-52 rounded-2xl p-1.5 shadow-pop-lg"
+          {/* Quick Move / Edit Menu (drag handle temporarily disabled) */}
+          {canEdit && (
+            <div className="relative flex shrink-0 items-center gap-1" ref={menuRef}>
+              <button
+                type="button"
+                onClick={() => setMenuOpen((prev) => !prev)}
+                aria-label={`Menu opsi ${place.name}`}
+                aria-expanded={menuOpen}
+                className="pop-press flex h-8 w-8 items-center justify-center rounded-xl border-2 border-ink bg-paper text-ink shadow-pop-sm hover:bg-cream-dark"
               >
-                {onEdit && (
-                  <button
-                    type="button"
-                    role="menuitem"
-                    onClick={() => {
-                      setMenuOpen(false)
-                      onEdit(place)
-                    }}
-                    className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs font-bold text-ink hover:bg-cream-dark"
-                  >
-                    <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
-                    <span>Edit Tempat</span>
-                  </button>
-                )}
+                <MoreVertical className="h-4 w-4" aria-hidden="true" />
+              </button>
 
-                {otherCategories.length > 0 && onMoveToCategory && (
-                  <>
-                    <div className="my-1 border-t border-ink/15 px-2.5 pt-1 text-[10px] font-extrabold uppercase tracking-wider text-ink-muted">
-                      <span className="inline-flex items-center gap-1">
-                        <ArrowRightLeft className="h-3 w-3" aria-hidden="true" />
-                        Pindah Kategori
-                      </span>
-                    </div>
-                    {otherCategories.map((cat) => (
-                      <button
-                        key={cat.id}
-                        type="button"
-                        role="menuitem"
-                        onClick={() => {
-                          setMenuOpen(false)
-                          onMoveToCategory(place, cat.id)
-                        }}
-                        className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs font-bold text-ink hover:bg-mango/50"
-                      >
-                        <span>{cat.emoji}</span>
-                        <span className="truncate">Pindah ke {cat.name}</span>
-                      </button>
-                    ))}
-                  </>
-                )}
-              </div>
-            )}
-          </div>
+              {menuOpen && (
+                <div
+                  role="menu"
+                  className="pop-card absolute right-0 top-10 z-30 w-52 rounded-2xl p-1.5 shadow-pop-lg"
+                >
+                  {onEdit && (
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={() => {
+                        setMenuOpen(false)
+                        onEdit(place)
+                      }}
+                      className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs font-bold text-ink hover:bg-cream-dark"
+                    >
+                      <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                      <span>Edit Tempat</span>
+                    </button>
+                  )}
+
+                  {otherCategories.length > 0 && onMoveToCategory && (
+                    <>
+                      <div className="my-1 border-t border-ink/15 px-2.5 pt-1 text-[10px] font-extrabold uppercase tracking-wider text-ink-muted">
+                        <span className="inline-flex items-center gap-1">
+                          <ArrowRightLeft className="h-3 w-3" aria-hidden="true" />
+                          Pindah Kategori
+                        </span>
+                      </div>
+                      {otherCategories.map((cat) => (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          role="menuitem"
+                          onClick={() => {
+                            setMenuOpen(false)
+                            onMoveToCategory(place, cat.id)
+                          }}
+                          className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs font-bold text-ink hover:bg-mango/50"
+                        >
+                          <span>{cat.emoji}</span>
+                          <span className="truncate">Pindah ke {cat.name}</span>
+                        </button>
+                      ))}
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Footer actions */}

@@ -20,6 +20,8 @@ create table if not exists public.places (
   name text not null,
   notes text[] not null default '{}',
   area text,
+  city text not null default 'makassar'
+    check (city in ('makassar', 'jakarta')),
   lat double precision,
   lng double precision,
   maps_url text,

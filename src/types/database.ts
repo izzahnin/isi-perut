@@ -33,6 +33,7 @@ export type Database = {
           name: string
           notes?: string[]
           area?: string | null
+          city?: 'makassar' | 'jakarta'
           lat?: number | null
           lng?: number | null
           maps_url?: string | null
@@ -47,6 +48,7 @@ export type Database = {
           name?: string
           notes?: string[]
           area?: string | null
+          city?: 'makassar' | 'jakarta'
           lat?: number | null
           lng?: number | null
           maps_url?: string | null

@@ -10,12 +10,15 @@ export type Category = {
   created_at: string
 }
 
+export type CityId = 'makassar' | 'jakarta'
+
 export type Place = {
   id: string
   category_id: string
   name: string
   notes: string[]
   area: string | null
+  city?: CityId
   lat: number | null
   lng: number | null
   maps_url: string | null
@@ -36,6 +39,7 @@ export interface NewPlaceInput {
   name: string
   notes?: string[]
   area?: string | null
+  city?: CityId
   lat?: number | null
   lng?: number | null
   maps_url?: string | null
@@ -48,6 +52,7 @@ export interface UpdatePlaceInput {
   name?: string
   notes?: string[]
   area?: string | null
+  city?: CityId
   lat?: number | null
   lng?: number | null
   maps_url?: string | null

@@ -1,9 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Sparkles, UserRound, X } from 'lucide-react'
+import { Eye, Sparkles, UserRound, X } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { registerOrCheckFriendName } from '../../lib/supabase'
 
 const FRIEND_NAME_KEY = 'isi-perut:friend-name:v1'
+const FRIEND_CAN_EDIT_KEY = 'isi-perut:friend-can-edit:v1'
 
 export function getSavedFriendName(): string {
   if (typeof window === 'undefined') return ''
@@ -14,10 +15,21 @@ export function getSavedFriendName(): string {
   }
 }
 
-export function saveFriendName(name: string): void {
+export function getSavedCanEdit(): boolean {
+  if (typeof window === 'undefined') return true
+  try {
+    const raw = window.localStorage.getItem(FRIEND_CAN_EDIT_KEY)
+    return raw === null ? true : raw === '1'
+  } catch {
+    return true
+  }
+}
+
+export function saveFriendSession(name: string, canEdit: boolean): void {
   if (typeof window === 'undefined') return
   try {
     window.localStorage.setItem(FRIEND_NAME_KEY, name.trim())
+    window.localStorage.setItem(FRIEND_CAN_EDIT_KEY, canEdit ? '1' : '0')
   } catch {
     // Ignore storage errors
   }
@@ -27,7 +39,7 @@ interface FriendIdentityModalProps {
   isOpen: boolean
   initialName: string
   canDismiss: boolean
-  onSave: (name: string) => void
+  onSave: (name: string, canEdit: boolean) => void
   onClose: () => void
 }
 
@@ -41,9 +53,10 @@ export function FriendIdentityModal({
   const [name, setName] = useState(initialName)
   const [error, setError] = useState('')
   const [isChecking, setIsChecking] = useState(false)
-  const [existingConfirmName, setExistingConfirmName] = useState<string | null>(
-    null,
-  )
+  const [existingConfirm, setExistingConfirm] = useState<{
+    name: string
+    canEdit: boolean
+  } | null>(null)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -61,21 +74,29 @@ export function FriendIdentityModal({
         result.status === 'exists' &&
         result.canonicalName.toLowerCase() !== initialName.toLowerCase()
       ) {
-        setExistingConfirmName(result.canonicalName)
+        setExistingConfirm({
+          name: result.canonicalName,
+          canEdit: result.canEdit,
+        })
         return
       }
-      saveFriendName(result.canonicalName)
-      onSave(result.canonicalName)
+      saveFriendSession(result.canonicalName, result.canEdit)
+      onSave(result.canonicalName, result.canEdit)
     } finally {
       setIsChecking(false)
     }
   }
 
   const handleConfirmExisting = () => {
-    if (!existingConfirmName) return
-    saveFriendName(existingConfirmName)
-    onSave(existingConfirmName)
-    setExistingConfirmName(null)
+    if (!existingConfirm) return
+    saveFriendSession(existingConfirm.name, existingConfirm.canEdit)
+    onSave(existingConfirm.name, existingConfirm.canEdit)
+    setExistingConfirm(null)
+  }
+
+  const handleEnterAsGuest = () => {
+    saveFriendSession('Tamu', false)
+    onSave('Tamu', false)
   }
 
   return (
@@ -127,21 +148,21 @@ export function FriendIdentityModal({
             </h2>
             <p className="mt-1 text-sm text-ink-muted">
               Cukup pakai <span className="font-bold text-ink">1 nama unik</span>{' '}
-              (tanpa perlu buat akun). Nama ini dipakai untuk tag{' '}
-              <span className="font-bold text-ink">by [Namamu]</span>, sedangkan
-              status <em>Sudah Mampir</em> tersimpan pribadi di perangkatmu.
+              (tanpa buat akun). Status <em>Sudah Mampir</em> tersimpan pribadi di
+              perangkatmu.
             </p>
 
-            {existingConfirmName ? (
+            {existingConfirm ? (
               <div className="mt-4 space-y-3 rounded-2xl border-2 border-ink bg-mango/40 p-3.5">
                 <p className="text-xs font-bold text-ink">
-                  Nama <span className="font-extrabold">{existingConfirmName}</span>{' '}
+                  Nama{' '}
+                  <span className="font-extrabold">{existingConfirm.name}</span>{' '}
                   sudah terdaftar di grup. Apakah ini kamu?
                 </p>
                 <div className="flex gap-2">
                   <button
                     type="button"
-                    onClick={() => setExistingConfirmName(null)}
+                    onClick={() => setExistingConfirm(null)}
                     className="pop-press flex-1 rounded-xl border-2 border-ink bg-paper px-3 py-2 text-xs font-extrabold text-ink shadow-pop-sm"
                   >
                     Ganti Nama
@@ -184,6 +205,15 @@ export function FriendIdentityModal({
                   className="pop-press w-full rounded-2xl border-2 border-ink bg-pandan px-4 py-3 font-display text-sm font-extrabold text-ink shadow-pop disabled:opacity-60"
                 >
                   {isChecking ? 'Mengecek nama...' : 'Gas Masuk!'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleEnterAsGuest}
+                  className="pop-press inline-flex w-full items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed border-ink/60 bg-paper px-4 py-2.5 text-xs font-extrabold text-ink-muted hover:bg-cream-dark hover:text-ink"
+                >
+                  <Eye className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>Masuk Sebagai Tamu (Lihat &amp; Gacha Saja)</span>
                 </button>
               </form>
             )}

@@ -1,14 +1,25 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { CheckCircle2, MapPin, Trash2, X } from 'lucide-react'
+import { CheckCircle2, Loader2, MapPin, Trash2, X } from 'lucide-react'
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
-import { parseMapsInput } from '../../lib/maps-parser'
+import {
+  isShortMapsUrl,
+  parseMapsInput,
+  resolveShortMapsUrl,
+} from '../../lib/maps-parser'
 import { cn } from '../../lib/utils'
-import type { Category, NewPlaceInput, Place, UpdatePlaceInput } from '../../types/place'
+import type {
+  Category,
+  CityId,
+  NewPlaceInput,
+  Place,
+  UpdatePlaceInput,
+} from '../../types/place'
 
 interface AddPlaceDrawerProps {
   isOpen: boolean
   categories: Category[]
   defaultCategoryId: string
+  defaultCity?: CityId
   defaultAddedBy?: string
   editingPlace: Place | null
   onClose: () => void
@@ -21,6 +32,7 @@ export function AddPlaceDrawer({
   isOpen,
   categories,
   defaultCategoryId,
+  defaultCity = 'makassar',
   defaultAddedBy = '',
   editingPlace,
   onClose,
@@ -29,10 +41,17 @@ export function AddPlaceDrawer({
   onDelete,
 }: AddPlaceDrawerProps) {
   const [categoryId, setCategoryId] = useState(defaultCategoryId)
+  const [city, setCity] = useState<CityId>(defaultCity)
   const [name, setName] = useState('')
   const [area, setArea] = useState('')
   const [notesRaw, setNotesRaw] = useState('')
   const [mapsRaw, setMapsRaw] = useState('')
+  const [resolvedShortMaps, setResolvedShortMaps] = useState<{
+    lat: number | null
+    lng: number | null
+    mapsUrl: string | null
+  } | null>(null)
+  const [isResolvingShort, setIsResolvingShort] = useState(false)
   const [addedBy, setAddedBy] = useState('')
   const [isVisited, setIsVisited] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -43,6 +62,7 @@ export function AddPlaceDrawer({
     if (!isOpen) return
     if (editingPlace) {
       setCategoryId(editingPlace.category_id)
+      setCity(editingPlace.city ?? 'makassar')
       setName(editingPlace.name)
       setArea(editingPlace.area ?? '')
       setNotesRaw(editingPlace.notes.join(', '))
@@ -56,6 +76,7 @@ export function AddPlaceDrawer({
       setIsVisited(editingPlace.is_visited)
     } else {
       setCategoryId(defaultCategoryId)
+      setCity(defaultCity)
       setName('')
       setArea('')
       setNotesRaw('')
@@ -63,9 +84,10 @@ export function AddPlaceDrawer({
       setAddedBy(defaultAddedBy)
       setIsVisited(false)
     }
+    setResolvedShortMaps(null)
     setConfirmDelete(false)
     setErrorMsg('')
-  }, [isOpen, editingPlace, defaultCategoryId, defaultAddedBy])
+  }, [isOpen, editingPlace, defaultCategoryId, defaultCity, defaultAddedBy])
 
   useEffect(() => {
     if (!isOpen) return
@@ -76,7 +98,29 @@ export function AddPlaceDrawer({
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isOpen, onClose])
 
-  const parsedMaps = useMemo(() => parseMapsInput(mapsRaw), [mapsRaw])
+  const directParsedMaps = useMemo(() => parseMapsInput(mapsRaw), [mapsRaw])
+  const parsedMaps =
+    directParsedMaps.lat !== null && directParsedMaps.lng !== null
+      ? directParsedMaps
+      : resolvedShortMaps ?? directParsedMaps
+
+  useEffect(() => {
+    if (!isOpen || !isShortMapsUrl(mapsRaw)) {
+      setResolvedShortMaps(null)
+      setIsResolvingShort(false)
+      return
+    }
+    let active = true
+    setIsResolvingShort(true)
+    void resolveShortMapsUrl(mapsRaw).then((resolved) => {
+      if (!active) return
+      setIsResolvingShort(false)
+      if (resolved) setResolvedShortMaps(resolved)
+    })
+    return () => {
+      active = false
+    }
+  }, [isOpen, mapsRaw])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -97,6 +141,7 @@ export function AddPlaceDrawer({
       if (editingPlace) {
         await onUpdate(editingPlace.id, {
           category_id: categoryId,
+          city,
           name: name.trim(),
           area: area.trim() || null,
           notes,
@@ -109,6 +154,7 @@ export function AddPlaceDrawer({
       } else {
         await onCreate({
           category_id: categoryId,
+          city,
           name: name.trim(),
           area: area.trim() || null,
           notes,
@@ -217,6 +263,34 @@ export function AddPlaceDrawer({
               </div>
 
               <div>
+                <span className="mb-1.5 block text-xs font-extrabold uppercase tracking-wide text-ink-muted">
+                  Kota
+                </span>
+                <div className="flex gap-2">
+                  {(
+                    [
+                      { id: 'makassar', label: '📍 Makassar' },
+                      { id: 'jakarta', label: '🏙️ Jakarta (Blok M)' },
+                    ] as const
+                  ).map((opt) => (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => setCity(opt.id)}
+                      className={cn(
+                        'pop-press flex-1 rounded-xl border-2 border-ink px-3 py-2 text-xs font-extrabold',
+                        city === opt.id
+                          ? 'bg-ink text-cream shadow-pop-sm'
+                          : 'bg-paper text-ink hover:bg-cream-dark',
+                      )}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
                 <label
                   htmlFor="place-name"
                   className="mb-1 block text-xs font-extrabold uppercase tracking-wide text-ink-muted"
@@ -304,7 +378,12 @@ export function AddPlaceDrawer({
                     className="w-full bg-transparent text-sm font-semibold text-ink placeholder:text-ink-muted focus:outline-none"
                   />
                 </div>
-                {parsedMaps.lat !== null && parsedMaps.lng !== null ? (
+                {isResolvingShort ? (
+                  <p className="mt-1.5 inline-flex items-center gap-1 rounded-lg bg-mango/60 px-2 py-0.5 text-xs font-bold text-ink">
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    <span>Mengambil koordinat dari link pendek Maps...</span>
+                  </p>
+                ) : parsedMaps.lat !== null && parsedMaps.lng !== null ? (
                   <p className="mt-1.5 inline-flex items-center gap-1 rounded-lg bg-pandan/25 px-2 py-0.5 text-xs font-bold text-ink">
                     <CheckCircle2 className="h-3.5 w-3.5 text-ink" />
                     <span>
@@ -314,7 +393,7 @@ export function AddPlaceDrawer({
                   </p>
                 ) : (
                   <p className="mt-1.5 text-[11px] font-semibold text-ink-muted">
-                    Info Maps masih kosong — tempel link Google Maps agar pin muncul di Peta Makassar.
+                    Tempel link Google Maps (`@lat,lng`, `maps.app.goo.gl`, atau koordinat) agar pin muncul di peta.
                   </p>
                 )}
               </div>

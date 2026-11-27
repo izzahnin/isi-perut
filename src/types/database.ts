@@ -70,14 +70,17 @@ export type Database = {
       friends: {
         Row: {
           name: string
+          can_edit: boolean
           created_at: string
         }
         Insert: {
           name: string
+          can_edit?: boolean
           created_at?: string
         }
         Update: {
           name?: string
+          can_edit?: boolean
           created_at?: string
         }
         Relationships: []

@@ -33,6 +33,7 @@ create table if not exists public.places (
 
 create table if not exists public.friends (
   name text primary key,
+  can_edit boolean not null default false,
   created_at timestamptz not null default now()
 );
 
@@ -53,9 +54,9 @@ values
   ('11111111-1111-4111-8111-111111111103', 'Romantic Dinner', 'romantic-dinner', '🕯️', 'purple', 2)
 on conflict (id) do nothing;
 
-insert into public.friends (name)
-values ('Pije')
-on conflict (name) do nothing;
+insert into public.friends (name, can_edit)
+values ('Pije', true), ('Caca', true)
+on conflict (name) do update set can_edit = excluded.can_edit;
 
 -- Row Level Security (kolaborasi ringan tanpa login wajib untuk grup teman)
 alter table public.categories enable row level security;

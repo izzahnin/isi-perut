@@ -6,6 +6,7 @@ import {
   List,
   Map as MapIcon,
   Plus,
+  ShieldCheck,
   Sparkles,
   UserRound,
   WifiOff,
@@ -28,10 +29,12 @@ import {
 } from './components/board/SearchFilterBar'
 import { AddCategoryModal } from './components/modals/AddCategoryModal'
 import { AddPlaceDrawer } from './components/modals/AddPlaceDrawer'
+import { AdminEditorsModal } from './components/modals/AdminEditorsModal'
 import {
   FriendIdentityModal,
   getSavedCanEdit,
   getSavedFriendName,
+  saveFriendSession,
 } from './components/modals/FriendIdentityModal'
 import { SpinWheelModal } from './components/modals/SpinWheelModal'
 import {
@@ -47,6 +50,7 @@ import {
   deletePlace,
   fetchCategories,
   fetchPlaces,
+  isFriendAllowedToEdit,
   isSupabaseConfigured,
   persistPlaceOrder,
   setLocalVisited,
@@ -114,6 +118,23 @@ function App() {
   const [editingPlace, setEditingPlace] = useState<Place | null>(null)
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
   const [isSpinWheelOpen, setIsSpinWheelOpen] = useState(false)
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false)
+
+  const syncFriendEditPermission = useCallback(async (nameToCheck: string) => {
+    if (!nameToCheck || nameToCheck.toLowerCase() === 'tamu') {
+      setCanEdit(false)
+      return
+    }
+    const allowed = await isFriendAllowedToEdit(nameToCheck)
+    setCanEdit(allowed)
+    saveFriendSession(nameToCheck, allowed)
+  }, [])
+
+  useEffect(() => {
+    if (friendName) {
+      void syncFriendEditPermission(friendName)
+    }
+  }, [friendName, syncFriendEditPermission])
 
   const [toastMessage, setToastMessage] = useState<string | null>(null)
   const toastTimerRef = useRef<number | null>(null)
@@ -412,7 +433,7 @@ function App() {
                     <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
                     <span>
                       {cityFilter === 'jakarta'
-                        ? 'JAKARTA • BLOK M'
+                        ? 'JAKARTA'
                         : cityFilter === 'all'
                           ? 'MKS & JKT'
                           : 'MAKASSAR LIST'}
@@ -431,6 +452,15 @@ function App() {
                       {friendName || 'Isi Nama'}
                       {!canEdit ? ' (Tamu)' : ''}
                     </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsAdminModalOpen(true)}
+                    title="Panel Admin: Atur daftar teman yang boleh edit"
+                    className="inline-flex items-center gap-1 rounded-full border border-ink bg-berry/15 px-2 py-0.5 text-[11px] font-extrabold text-ink hover:bg-berry/25"
+                  >
+                    <ShieldCheck className="h-3 w-3" aria-hidden="true" />
+                    <span>Admin</span>
                   </button>
                   <a
                     href="https://instagram.com/weareremps"
@@ -467,7 +497,7 @@ function App() {
                 {(
                   [
                     { id: 'makassar', label: '📍 Makassar' },
-                    { id: 'jakarta', label: '🏙️ JKT Blok M' },
+                    { id: 'jakarta', label: '🏙️ Jakarta' },
                     { id: 'all', label: '🌏 Semua' },
                   ] as const
                 ).map((item) => (
@@ -821,8 +851,9 @@ function App() {
       <SpinWheelModal
         isOpen={isSpinWheelOpen}
         categories={categories}
-        places={cityScopedPlaces}
+        places={places}
         initialCategoryId={activeCategoryId}
+        initialCity={cityFilter}
         onClose={() => setIsSpinWheelOpen(false)}
       />
 
@@ -845,6 +876,17 @@ function App() {
           }
         }}
         onClose={() => setIsIdentityModalOpen(false)}
+        onOpenAdmin={() => setIsAdminModalOpen(true)}
+      />
+
+      <AdminEditorsModal
+        isOpen={isAdminModalOpen}
+        onClose={() => setIsAdminModalOpen(false)}
+        onPermissionsUpdated={() => {
+          if (friendName) {
+            void syncFriendEditPermission(friendName)
+          }
+        }}
       />
 
       <WhatsNewModal

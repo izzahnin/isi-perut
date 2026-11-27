@@ -41,6 +41,7 @@ interface FriendIdentityModalProps {
   canDismiss: boolean
   onSave: (name: string, canEdit: boolean) => void
   onClose: () => void
+  onOpenAdmin?: () => void
 }
 
 export function FriendIdentityModal({
@@ -49,6 +50,7 @@ export function FriendIdentityModal({
   canDismiss,
   onSave,
   onClose,
+  onOpenAdmin,
 }: FriendIdentityModalProps) {
   const [name, setName] = useState(initialName)
   const [error, setError] = useState('')
@@ -215,6 +217,21 @@ export function FriendIdentityModal({
                   <Eye className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Masuk Sebagai Tamu (Lihat &amp; Gacha Saja)</span>
                 </button>
+
+                {onOpenAdmin && (
+                  <div className="pt-1 text-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (canDismiss) onClose()
+                        onOpenAdmin()
+                      }}
+                      className="text-[11px] font-bold text-ink-muted underline decoration-ink/30 underline-offset-2 hover:text-ink"
+                    >
+                      🔐 Atur Daftar Nama Teman (Khusus Admin)
+                    </button>
+                  </div>
+                )}
               </form>
             )}
           </motion.div>

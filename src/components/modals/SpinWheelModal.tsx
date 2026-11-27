@@ -5,14 +5,17 @@ import { CATEGORY_THEMES } from '../../lib/category-theme'
 import { triggerHaptic } from '../../lib/dnd-config'
 import { buildGoogleMapsUrl } from '../../lib/maps-parser'
 import { cn } from '../../lib/utils'
-import type { Category, Place } from '../../types/place'
+import type { Category, CityId, Place } from '../../types/place'
 import { ALL_CATEGORIES_ID } from '../board/CategoryTabs'
+
+type CityFilter = CityId | 'all'
 
 interface SpinWheelModalProps {
   isOpen: boolean
   categories: Category[]
   places: Place[]
   initialCategoryId: string
+  initialCity?: CityFilter
   onClose: () => void
 }
 
@@ -21,8 +24,10 @@ export function SpinWheelModal({
   categories,
   places,
   initialCategoryId,
+  initialCity = 'makassar',
   onClose,
 }: SpinWheelModalProps) {
+  const [scopeCity, setScopeCity] = useState<CityFilter>(initialCity)
   const [scopeCategoryId, setScopeCategoryId] = useState<string>(
     initialCategoryId || ALL_CATEGORIES_ID,
   )
@@ -39,10 +44,11 @@ export function SpinWheelModal({
       setIsSpinning(false)
       return
     }
+    setScopeCity(initialCity)
     setScopeCategoryId(initialCategoryId || ALL_CATEGORIES_ID)
     setHasWinner(false)
     setCurrentPlace(null)
-  }, [isOpen, initialCategoryId])
+  }, [isOpen, initialCategoryId, initialCity])
 
   useEffect(() => {
     return () => {
@@ -57,6 +63,9 @@ export function SpinWheelModal({
 
   const pool = useMemo(() => {
     return places.filter((p) => {
+      if (scopeCity !== 'all' && (p.city ?? 'makassar') !== scopeCity) {
+        return false
+      }
       if (
         scopeCategoryId !== ALL_CATEGORIES_ID &&
         p.category_id !== scopeCategoryId
@@ -66,7 +75,7 @@ export function SpinWheelModal({
       if (onlyUnvisited && p.is_visited) return false
       return true
     })
-  }, [places, scopeCategoryId, onlyUnvisited])
+  }, [places, scopeCity, scopeCategoryId, onlyUnvisited])
 
   const startSpin = () => {
     if (pool.length === 0 || isSpinning) return
@@ -153,11 +162,44 @@ export function SpinWheelModal({
               Bingung mau ke mana?
             </h2>
             <p className="mt-0.5 text-xs font-semibold text-ink-muted">
-              Pilih kategori lalu putar roda untuk menentukan destinasi!
+              Pilih kota &amp; kategori lalu putar roda untuk menentukan destinasi!
             </p>
 
+            {/* City filter selector */}
+            <div className="mt-3 flex items-center gap-1.5">
+              {(
+                [
+                  { id: 'makassar', label: '🏙️ Makassar' },
+                  { id: 'jakarta', label: '🗼 Jakarta' },
+                  { id: 'all', label: '🌏 Semua' },
+                ] as const
+              ).map((city) => {
+                const selected = scopeCity === city.id
+                return (
+                  <button
+                    key={city.id}
+                    type="button"
+                    disabled={isSpinning}
+                    onClick={() => {
+                      setScopeCity(city.id)
+                      setCurrentPlace(null)
+                      setHasWinner(false)
+                    }}
+                    className={cn(
+                      'pop-press flex-1 rounded-full border-2 border-ink px-2.5 py-1.5 text-[11px] font-extrabold transition-colors',
+                      selected
+                        ? 'bg-pandan text-ink shadow-pop-sm'
+                        : 'bg-paper text-ink',
+                    )}
+                  >
+                    {city.label}
+                  </button>
+                )
+              })}
+            </div>
+
             {/* Category scope selector */}
-            <div className="no-scrollbar mt-3 flex items-center gap-1.5 overflow-x-auto pb-1">
+            <div className="no-scrollbar mt-2 flex items-center gap-1.5 overflow-x-auto pb-1">
               <button
                 type="button"
                 disabled={isSpinning}
@@ -229,7 +271,11 @@ export function SpinWheelModal({
                   </h3>
 
                   <p className="text-xs font-semibold text-ink-muted">
-                    {currentPlace.area ? `📍 ${currentPlace.area}` : 'Makassar'}
+                    {currentPlace.area
+                      ? `📍 ${currentPlace.area}`
+                      : (currentPlace.city ?? 'makassar') === 'jakarta'
+                        ? 'Jakarta'
+                        : 'Makassar'}
                     {currentPlace.notes.length > 0
                       ? ` • ${currentPlace.notes.join(', ')}`
                       : ''}

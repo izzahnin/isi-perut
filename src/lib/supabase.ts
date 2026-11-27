@@ -49,9 +49,30 @@ function getEnvEditorAllowlist(): string[] | null {
     .filter(Boolean)
 }
 
+export interface LocalFriendRecord {
+  name: string
+  can_edit: boolean
+  created_at: string
+}
+
+const STORAGE_FRIENDS_KEY = 'isi-perut:friends:v1'
+
+export function getLocalFriends(): LocalFriendRecord[] {
+  const defaults: LocalFriendRecord[] = DEFAULT_EDITOR_ALLOWLIST.map((n) => ({
+    name: n.charAt(0).toUpperCase() + n.slice(1),
+    can_edit: true,
+    created_at: '2026-11-27T00:00:00.000Z',
+  }))
+  return readLocal<LocalFriendRecord[]>(STORAGE_FRIENDS_KEY, defaults)
+}
+
+export function saveLocalFriends(friends: LocalFriendRecord[]): void {
+  writeLocal(STORAGE_FRIENDS_KEY, friends)
+}
+
 export async function isFriendAllowedToEdit(name: string): Promise<boolean> {
   const clean = name.trim().toLowerCase()
-  if (!clean) return false
+  if (!clean || clean === 'tamu') return false
 
   const envAllowlist = getEnvEditorAllowlist()
   if (envAllowlist) {
@@ -59,17 +80,18 @@ export async function isFriendAllowedToEdit(name: string): Promise<boolean> {
   }
 
   if (!supabase) {
-    return DEFAULT_EDITOR_ALLOWLIST.includes(clean)
+    const local = getLocalFriends().find((f) => f.name.toLowerCase() === clean)
+    return Boolean(local?.can_edit)
   }
 
   const escapedPattern = name.trim().replace(/[%_\\]/g, '\\$&')
   const { data } = await supabase
     .from('friends')
-    .select('name')
+    .select('name, can_edit')
     .ilike('name', escapedPattern)
     .maybeSingle()
 
-  return Boolean(data)
+  return Boolean(data?.can_edit)
 }
 
 export async function registerOrCheckFriendName(
@@ -79,37 +101,43 @@ export async function registerOrCheckFriendName(
   const envAllowlist = getEnvEditorAllowlist()
 
   if (!supabase) {
-    const canEdit = envAllowlist
-      ? envAllowlist.includes(cleanName.toLowerCase())
-      : true
-    return { status: 'local', canonicalName: cleanName, canEdit }
+    if (envAllowlist) {
+      return {
+        status: 'local',
+        canonicalName: cleanName,
+        canEdit: envAllowlist.includes(cleanName.toLowerCase()),
+      }
+    }
+    const existingLocal = getLocalFriends().find(
+      (f) => f.name.toLowerCase() === cleanName.toLowerCase(),
+    )
+    return {
+      status: existingLocal ? 'exists' : 'local',
+      canonicalName: existingLocal?.name ?? cleanName,
+      canEdit: Boolean(existingLocal?.can_edit),
+    }
   }
 
   // Escape SQL LIKE wildcards so % or _ in names match literally, case-insensitively
   const escapedPattern = cleanName.replace(/[%_\\]/g, '\\$&')
   const { data: existing } = await supabase
     .from('friends')
-    .select('name')
+    .select('name, can_edit')
     .ilike('name', escapedPattern)
     .maybeSingle()
 
   if (existing) {
     const canEdit = envAllowlist
       ? envAllowlist.includes(existing.name.toLowerCase())
-      : true
+      : Boolean(existing.can_edit)
     return { status: 'exists', canonicalName: existing.name, canEdit }
   }
 
-  // If allowlist is active and name is not in it, treat as viewer without registering
-  if (envAllowlist && !envAllowlist.includes(cleanName.toLowerCase())) {
-    return { status: 'created', canonicalName: cleanName, canEdit: false }
-  }
-
-  const { error } = await supabase.from('friends').insert({ name: cleanName })
-  if (error) {
-    return { status: 'exists', canonicalName: cleanName, canEdit: true }
-  }
-  return { status: 'created', canonicalName: cleanName, canEdit: true }
+  // Nama di luar daftar friends otomatis masuk sebagai Tamu (Read-Only + Gacha)
+  const canEdit = envAllowlist
+    ? envAllowlist.includes(cleanName.toLowerCase())
+    : false
+  return { status: 'created', canonicalName: cleanName, canEdit }
 }
 
 export function getLocalVisitedMap(): Record<string, boolean> {

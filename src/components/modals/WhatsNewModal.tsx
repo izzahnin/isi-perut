@@ -40,8 +40,8 @@ const UPDATES: { emoji: string; title: string; desc: string }[] = [
   },
   {
     emoji: '🏙️',
-    title: 'Jakarta (Blok M) & Filter Nama',
-    desc: 'Kini ada pilihan kota Makassar & Jakarta (Blok M), plus filter berdasarkan siapa yang menambahkan.',
+    title: 'Jakarta & Filter Nama',
+    desc: 'Kini ada pilihan kota Makassar & Jakarta, plus filter berdasarkan siapa yang menambahkan.',
   },
   {
     emoji: '📍',

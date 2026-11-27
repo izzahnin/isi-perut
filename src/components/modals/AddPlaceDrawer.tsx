@@ -270,7 +270,7 @@ export function AddPlaceDrawer({
                   {(
                     [
                       { id: 'makassar', label: '📍 Makassar' },
-                      { id: 'jakarta', label: '🏙️ Jakarta (Blok M)' },
+                      { id: 'jakarta', label: '🏙️ Jakarta' },
                     ] as const
                   ).map((opt) => (
                     <button

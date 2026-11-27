@@ -1,0 +1,2110 @@
+{
+  "categories": [
+    {
+      "id": "11111111-1111-4111-8111-111111111101",
+      "name": "MAM",
+      "slug": "mam",
+      "emoji": "🍱",
+      "color_token": "red",
+      "sort_order": 0,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111102",
+      "name": "NUM",
+      "slug": "num",
+      "emoji": "🧋",
+      "color_token": "orange",
+      "sort_order": 1,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111103",
+      "name": "Romantic Dinner",
+      "slug": "romantic-dinner",
+      "emoji": "🕯️",
+      "color_token": "purple",
+      "sort_order": 2,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    }
+  ],
+  "places": [
+    {
+      "id": "22222222-2222-4222-8222-222222222001",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Warung Mas Ateng",
+      "notes": [
+        "nasi goreng",
+        "malam"
+      ],
+      "area": "Jl. Timor",
+      "lat": -5.1281289,
+      "lng": 119.40819,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Warung+Mas+Ateng+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 0,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222002",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Sate Gaul",
+      "notes": [
+        "sate",
+        "makan malam",
+        "santai"
+      ],
+      "area": "Jl. Jambu",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Sate+Gaul+Jl+Jambu+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 1,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222003",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Nasi Kuning Golkar Pak Mus",
+      "notes": [
+        "kuliner malam",
+        "street food"
+      ],
+      "area": "Jl. Botolempangan",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Nasi+Kuning+Golkar+Pak+Mus+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 2,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222004",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Pallubasa Serigala",
+      "notes": [
+        "legend",
+        "khas makassar",
+        "alas telur"
+      ],
+      "area": "Jl. Serigala",
+      "lat": -5.1683442,
+      "lng": 119.4497834,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Pallubasa+Serigala+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 3,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222005",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Coto Batu Puti",
+      "notes": [
+        "coto makassar",
+        "khas makassar"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Coto+Batu+Puti+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 4,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222006",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Bakso Cez Onta Lama",
+      "notes": [
+        "bakso",
+        "siang-malam"
+      ],
+      "area": "Jl. Onta Lama",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Bakso+Cez+Onta+Lama+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 5,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222007",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "KFC",
+      "notes": [
+        "fast food",
+        "ayam goreng",
+        "cepat"
+      ],
+      "area": null,
+      "lat": -5.1628778,
+      "lng": 119.4360269,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=KFC+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 6,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222008",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Jokjoy",
+      "notes": [
+        "casual dining",
+        "makan bareng"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Jokjoy+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 7,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222009",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Indomi Warmindo",
+      "notes": [
+        "mie instan",
+        "murah",
+        "malam"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Warmindo+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 8,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222010",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Plataran",
+      "notes": [
+        "nusantara upscale",
+        "spesial"
+      ],
+      "area": "Jl. Mutiara Boulevard",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Plataran+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 9,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222011",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "WARUNG PANGSIT LULU",
+      "notes": [
+        "mie pangsit",
+        "siang-sore"
+      ],
+      "area": "Jl. Cendrawasih 4",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Warung+Pangsit+Lulu+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 10,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222012",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "McDonald's",
+      "notes": [
+        "fast food",
+        "24 jam",
+        "drive thru"
+      ],
+      "area": null,
+      "lat": -5.1636959,
+      "lng": 119.4742958,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=McDonalds+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 11,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222013",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Soto",
+      "notes": [
+        "berkuah",
+        "hangat"
+      ],
+      "area": null,
+      "lat": -5.163066,
+      "lng": 119.4228359,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Soto+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 12,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222014",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Nasi Goreng Kambing",
+      "notes": [
+        "nasi goreng",
+        "malam",
+        "rempah"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Nasi+Goreng+Kambing+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 13,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222015",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Richeese Factory",
+      "notes": [
+        "fast food",
+        "saus keju",
+        "pedas"
+      ],
+      "area": null,
+      "lat": -5.1557596,
+      "lng": 119.4161111,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Richeese+Factory+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 14,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222016",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Holbel",
+      "notes": [
+        "ayam",
+        "casual"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Holbel+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 15,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222017",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Warung Pangkep Sop Saudara Irian",
+      "notes": [
+        "legend",
+        "24 jam",
+        "khas makassar"
+      ],
+      "area": "Jl. Dr. Wahidin Sudirohusodo",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Warung+Pangkep+Sop+Saudara+Irian+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 16,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222018",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Keprabon",
+      "notes": [
+        "ayam geprek",
+        "pedas"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Ayam+Geprek+Keprabon+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 17,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222019",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Dinar",
+      "notes": [
+        "seafood",
+        "keluarga",
+        "legend"
+      ],
+      "area": "Ujung Pandang",
+      "lat": -5.0689707,
+      "lng": 119.5251149,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=RM+Dinar+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 18,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222020",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Cobek Cobek",
+      "notes": [
+        "penyetan",
+        "sambal",
+        "nusantara"
+      ],
+      "area": null,
+      "lat": -5.1420568,
+      "lng": 119.4811501,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Cobek+Cobek+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 19,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222021",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Mas Daeng",
+      "notes": [
+        "lalapan",
+        "ayam bakar",
+        "santai"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Mas+Daeng+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 20,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222022",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Kapurung",
+      "notes": [
+        "khas sulsel",
+        "segar",
+        "makan siang"
+      ],
+      "area": null,
+      "lat": -5.1422222,
+      "lng": 119.4872894,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Kapurung+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 21,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222023",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Mister",
+      "notes": [
+        "makan berat",
+        "santai"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Mister+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 22,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222024",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Sate Taican",
+      "notes": [
+        "sate taichan",
+        "malam",
+        "pedas"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Sate+Taichan+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 23,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222025",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Yoshinoya",
+      "notes": [
+        "beef bowl",
+        "japanese",
+        "mall"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Yoshinoya+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 24,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222026",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Nasi Padang",
+      "notes": [
+        "padang",
+        "kenyang",
+        "makan siang"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Nasi+Padang+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 25,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222027",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Warteg Mura",
+      "notes": [
+        "warteg",
+        "hemat",
+        "rumahan"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Warteg+Mura+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 26,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222028",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Ratu Gurih",
+      "notes": [
+        "seafood",
+        "keluarga",
+        "makan ramean"
+      ],
+      "area": "Ujung Pandang",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=RM+Ratu+Gurih+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 27,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222029",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Nasi Kuning Mantul",
+      "notes": [
+        "nasi kuning",
+        "sarapan",
+        "malam"
+      ],
+      "area": "Jl. Boulevard",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Nasi+Kuning+Mantul+Boulevard+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 28,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222030",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Ayam Goreng Sulawesi",
+      "notes": [
+        "ayam goreng",
+        "khas makassar",
+        "legend"
+      ],
+      "area": null,
+      "lat": -5.1337897,
+      "lng": 119.415079,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Ayam+Goreng+Sulawesi+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 29,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222031",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Ayam Tolak Pinggang",
+      "notes": [
+        "ayam",
+        "makan siang"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Ayam+Tolak+Pinggang+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 30,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222032",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Sate Ranggong",
+      "notes": [
+        "sate",
+        "kuliner malam",
+        "dini hari"
+      ],
+      "area": "Jl. Ranggong",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Sate+Ranggong+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 31,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222033",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "The Icon",
+      "notes": [
+        "casual dining",
+        "eatery"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=The+Icon+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 32,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222034",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Taki",
+      "notes": [
+        "japanese",
+        "casual"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Taki+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 33,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222035",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Dimsum",
+      "notes": [
+        "dimsum",
+        "nyemil"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Dimsum+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 34,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222036",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "The Foreign",
+      "notes": [
+        "western",
+        "casual dining"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=The+Foreign+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 35,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222037",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Virtu",
+      "notes": [
+        "eatery",
+        "aesthetic"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Virtu+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 36,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222038",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "New World",
+      "notes": [
+        "chinese food",
+        "makan ramean"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=New+World+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 37,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222039",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "The Lokal",
+      "notes": [
+        "casual dining",
+        "nusantara"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=The+Lokal+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 38,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222040",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Sandeq",
+      "notes": [
+        "khas sulsel",
+        "makan bareng"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Sandeq+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 39,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222041",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Fajar Seafood Sawerigading MKS",
+      "notes": [
+        "seafood",
+        "makan ramean",
+        "siang-malam"
+      ],
+      "area": "Jl. Sawerigading",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Fajar+Seafood+Sawerigading+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 40,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222042",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Bangi Kopitiam",
+      "notes": [
+        "kopitiam",
+        "sarapan",
+        "chill"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Bangi+Kopitiam+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 41,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222043",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "JJ Steak",
+      "notes": [
+        "steak",
+        "western",
+        "casual"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=JJ+Steak+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 42,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222044",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Verda",
+      "notes": [
+        "contemporary",
+        "chill",
+        "aesthetic"
+      ],
+      "area": "Jl. Botolempangan",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Verda+Contemporary+Cuisine+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 43,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222045",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Panbakers",
+      "notes": [
+        "bakery",
+        "brunch",
+        "pastry"
+      ],
+      "area": null,
+      "lat": -5.1449676,
+      "lng": 119.4210888,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Panbakers+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 44,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222046",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "The Saigon Eat Drink Folk",
+      "notes": [
+        "vietnamese",
+        "casual dining",
+        "siang-malam"
+      ],
+      "area": "Jl. Letjen Hertasning",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=The+Saigon+Eat+Drink+Folk+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 45,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222047",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Mie Hengki",
+      "notes": [
+        "mie",
+        "kuliner malam",
+        "larut malam"
+      ],
+      "area": "Jl. Nusantara",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Mie+Hengki+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 46,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222048",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Aroma Coto Gagak",
+      "notes": [
+        "legend",
+        "24 jam",
+        "coto makassar"
+      ],
+      "area": "Jl. Gagak",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Aroma+Coto+Gagak+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 47,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222049",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Ayam Goreng Fatmawati Sudiang",
+      "notes": [
+        "ayam goreng",
+        "nusantara",
+        "keluarga"
+      ],
+      "area": "Jl. Perintis Kemerdekaan",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Ayam+Goreng+Fatmawati+Sudiang+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 48,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222050",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Bebek Surga",
+      "notes": [
+        "bebek",
+        "tutup minggu"
+      ],
+      "area": "Jl. RSI Faisal XII",
+      "lat": -5.1660978,
+      "lng": 119.4344125,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Bebek+Surga+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 49,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222051",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Teras Kondang",
+      "notes": [
+        "nusantara",
+        "makan bareng"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Teras+Kondang+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 50,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222052",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Sate Sulawesi",
+      "notes": [
+        "sate",
+        "makan malam"
+      ],
+      "area": null,
+      "lat": -5.1558853,
+      "lng": 119.4433353,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Sate+Sulawesi+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 51,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222053",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Funsit",
+      "notes": [
+        "pangsit",
+        "mie",
+        "casual"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Funsit+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 52,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222054",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "FAT BAO Dimsum CPI",
+      "notes": [
+        "dimsum",
+        "sarapan minggu",
+        "chill"
+      ],
+      "area": "Jl. CitraLand Celebes",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=FAT+BAO+Dimsum+CPI+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 53,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222055",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Taichan Roterdam",
+      "notes": [
+        "sate taichan",
+        "kuliner malam"
+      ],
+      "area": "Ujung Pandang",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Taichan+Rotterdam+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 54,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222056",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Bakmi Mangkoek Ayam",
+      "notes": [
+        "bakmi",
+        "pagi-sore",
+        "tutup minggu"
+      ],
+      "area": "Jl. Beruang",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Bakmi+Mangkoek+Ayam+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 55,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222057",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Ayam Coek",
+      "notes": [
+        "ayam",
+        "sambal",
+        "pedas"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Ayam+Coek+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 56,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222058",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Sushi Tei",
+      "notes": [
+        "sushi",
+        "japanese",
+        "mall"
+      ],
+      "area": null,
+      "lat": -5.1364545,
+      "lng": 119.4077773,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Sushi+Tei+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 57,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222059",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Meiji",
+      "notes": [
+        "japanese",
+        "casual dining"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Meiji+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 58,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222060",
+      "category_id": "11111111-1111-4111-8111-111111111101",
+      "name": "Secret Wagyu",
+      "notes": [
+        "wagyu",
+        "premium",
+        "tutup senin"
+      ],
+      "area": "Jl. Veteran Utara",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Secret+Wagyu+A5+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 59,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222061",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "SEIKA RSVP",
+      "notes": [
+        "cafe",
+        "chill",
+        "nongki malam"
+      ],
+      "area": "Jl. Kakatua 2",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=SEIKA+RSVP+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 0,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222062",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Delicate Society",
+      "notes": [
+        "coffee shop",
+        "aesthetic",
+        "pagi-malam"
+      ],
+      "area": "Jl. Serigala",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Delicate+Society+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 1,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222063",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Tanamera Coffee Pettarani",
+      "notes": [
+        "specialty coffee",
+        "wfc",
+        "buka pagi"
+      ],
+      "area": "Jl. A. P. Pettarani",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Tanamera+Coffee+Pettarani+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 2,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222064",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Starbucks",
+      "notes": [
+        "coffee shop",
+        "wfc",
+        "chill"
+      ],
+      "area": null,
+      "lat": -5.1536539,
+      "lng": 119.4166904,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Starbucks+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 3,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222065",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Anomali",
+      "notes": [
+        "specialty coffee",
+        "wfc",
+        "kopi lokal"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Anomali+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 4,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222066",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Eksposed 3.0 signature Pettarani",
+      "notes": [
+        "coffee shop",
+        "wfc",
+        "signature"
+      ],
+      "area": "Jl. A. P. Pettarani",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Eksposed+3.0+signature+Pettarani+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 5,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222067",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Social Barn Sutomo",
+      "notes": [
+        "coffee & eatery",
+        "chill",
+        "pusat kota"
+      ],
+      "area": "Jl. Dr. Sutomo",
+      "lat": -5.1434936,
+      "lng": 119.4135566,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Social+Barn+Sutomo+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 6,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222068",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "KOPITEORI",
+      "notes": [
+        "buka pagi",
+        "wfc",
+        "kopi lokal"
+      ],
+      "area": "Jl. Beruang",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=KOPITEORI+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 7,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222069",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "C4",
+      "notes": [
+        "coffee shop",
+        "nongki"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=C4+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 8,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222070",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Toko Kopi Oma - Post Cantoor",
+      "notes": [
+        "buka pagi",
+        "vintage vibes",
+        "nongki malam"
+      ],
+      "area": "Jl. A. P. Pettarani",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Toko+Kopi+Oma+Post+Cantoor+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 9,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222071",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Arah Tuju Coffee Bar Sunu",
+      "notes": [
+        "coffee bar",
+        "pagi-sore",
+        "tutup minggu"
+      ],
+      "area": "Jl. Sunu",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Arah+Tuju+Coffee+Bar+Sunu+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 10,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222072",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Konijiwa",
+      "notes": [
+        "coffee shop",
+        "matcha",
+        "chill"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Kopi+Koni+Konijiwa+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 11,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222073",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Warkop LaKopi Hertasning",
+      "notes": [
+        "warkop modern",
+        "nongki malam",
+        "ramean"
+      ],
+      "area": "Jl. Letjen Hertasning",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Warkop+LaKopi+Hertasning+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 12,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222074",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Saintmary",
+      "notes": [
+        "cafe",
+        "aesthetic",
+        "nongki"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Saintmary+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 13,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222075",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Haus Latte",
+      "notes": [
+        "kopi susu",
+        "grab & go"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Haus+Latte+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 14,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222076",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Fore",
+      "notes": [
+        "coffee shop",
+        "grab & go",
+        "kopi susu"
+      ],
+      "area": null,
+      "lat": -5.1409349,
+      "lng": 119.4109069,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Fore+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 15,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222077",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Noice",
+      "notes": [
+        "coffee shop",
+        "chill"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Noice+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 16,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222078",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Kahi",
+      "notes": [
+        "coffee shop",
+        "nongki"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Kahi+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 17,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222079",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Panama",
+      "notes": [
+        "cafe",
+        "chill",
+        "nongki"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Panama+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 18,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222080",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Maka Pettarani",
+      "notes": [
+        "coffee shop",
+        "nongki"
+      ],
+      "area": "Jl. A. P. Pettarani",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Maka+Pettarani+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 19,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222081",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Dari Kopi Daeng Tompo",
+      "notes": [
+        "buka pagi",
+        "nongki malam",
+        "chill"
+      ],
+      "area": "Jl. Daeng Tompo",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Dari+Kopi+Daeng+Tompo+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 20,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222082",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "NORDIC Coffee CPI",
+      "notes": [
+        "buka pagi",
+        "aesthetic",
+        "weekend malam"
+      ],
+      "area": "Business Park CPI",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=NORDIC+Coffee+CPI+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 21,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222083",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Expat. Roasters CPI Makassar",
+      "notes": [
+        "specialty coffee",
+        "sunset",
+        "wfc"
+      ],
+      "area": "Sunset Quay CPI",
+      "lat": -5.1475599,
+      "lng": 119.3952849,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Expat+Roasters+CPI+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 22,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222084",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Half Hand Caffeine",
+      "notes": [
+        "buka pagi",
+        "coffee shop",
+        "chill"
+      ],
+      "area": "Jl. Kelapa",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Half+Hand+Caffeine+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 23,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222085",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Bangi Kopitiam",
+      "notes": [
+        "kopitiam",
+        "ngopi pagi",
+        "chill"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Bangi+Kopitiam+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 24,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222086",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Social Barn Boulevard",
+      "notes": [
+        "buka subuh/pagi",
+        "nongki",
+        "wfc"
+      ],
+      "area": "Jl. Boulevard",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Social+Barn+Boulevard+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 25,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222087",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Distric",
+      "notes": [
+        "cafe",
+        "nongki malam"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=District+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 26,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222088",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Kopi Kuls",
+      "notes": [
+        "coffee shop",
+        "santai"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Kopi+Kuls+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 27,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222089",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "LAKU Patisserie",
+      "notes": [
+        "patisserie",
+        "pastry & coffee",
+        "buka pagi"
+      ],
+      "area": "Jl. Ujung Pandang",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=LAKU+Patisserie+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 28,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222090",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Khano",
+      "notes": [
+        "coffee shop",
+        "chill"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Khano+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 29,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222091",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Kunawa",
+      "notes": [
+        "coffee shop",
+        "aesthetic"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Kunawa+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 30,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222092",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Sasini",
+      "notes": [
+        "cafe",
+        "chill"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Sasini+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 31,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222093",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Brood",
+      "notes": [
+        "bakery & coffee",
+        "pastry"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Brood+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 32,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222094",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Himo",
+      "notes": [
+        "cafe",
+        "nongki"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Himo+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 33,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222095",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Okanta",
+      "notes": [
+        "coffee shop",
+        "chill"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Okanta+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 34,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222096",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Sachi",
+      "notes": [
+        "cafe",
+        "japanese vibes"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Sachi+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 35,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222097",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Fur",
+      "notes": [
+        "coffee shop",
+        "aesthetic"
+      ],
+      "area": null,
+      "lat": -5.1895804,
+      "lng": 119.3942642,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Fur+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 36,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222098",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Black Chair",
+      "notes": [
+        "coffee shop",
+        "wfc",
+        "chill"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Black+Chair+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 37,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222099",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Papiyo",
+      "notes": [
+        "cafe",
+        "nongki"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Papiyo+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 38,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222100",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Roket",
+      "notes": [
+        "coffee shop",
+        "nongki malam"
+      ],
+      "area": "Jl. Botolempangan",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Roket+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 39,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222101",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Cava",
+      "notes": [
+        "coffee shop",
+        "aesthetic",
+        "chill"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Cava+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 40,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222102",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Karna",
+      "notes": [
+        "coffee shop",
+        "nongki"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Karna+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 41,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222103",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Sraya",
+      "notes": [
+        "cafe",
+        "chill"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Sraya+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 42,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222104",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Punala",
+      "notes": [
+        "coffee shop",
+        "aesthetic"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Punala+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 43,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222105",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Stuja",
+      "notes": [
+        "soon",
+        "coffee shop",
+        "minimalis"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Stuja+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 44,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222106",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Cure",
+      "notes": [
+        "coffee shop",
+        "chill"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Cure+Coffee+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 45,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222107",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "R57",
+      "notes": [
+        "cafe",
+        "nongki"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=R57+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 46,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222108",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Taobun",
+      "notes": [
+        "pastry & coffee",
+        "bakpao",
+        "nyemil"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Taobun+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 47,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222109",
+      "category_id": "11111111-1111-4111-8111-111111111102",
+      "name": "Dast Deli",
+      "notes": [
+        "deli",
+        "sandwich & coffee",
+        "brunch"
+      ],
+      "area": null,
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Dast+Deli+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 48,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222110",
+      "category_id": "11111111-1111-4111-8111-111111111103",
+      "name": "OneNine Sky Lounge (Arthama)",
+      "notes": [
+        "sky lounge",
+        "city view",
+        "sunset"
+      ],
+      "area": "Jl. Haji Bau",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=OneNine+Sky+Lounge+Arthama+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 0,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222111",
+      "category_id": "11111111-1111-4111-8111-111111111103",
+      "name": "Meliá Makassar",
+      "notes": [
+        "rooftop bar",
+        "hotel dining",
+        "elegan"
+      ],
+      "area": "Jl. A. Mappanyukki",
+      "lat": -5.1504562,
+      "lng": 119.4149243,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Melia+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 1,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222112",
+      "category_id": "11111111-1111-4111-8111-111111111103",
+      "name": "Fireflies Hertasning",
+      "notes": [
+        "casual dining",
+        "cozy",
+        "malam"
+      ],
+      "area": "Jl. Letjen Hertasning",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Fireflies+Hertasning+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 2,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222113",
+      "category_id": "11111111-1111-4111-8111-111111111103",
+      "name": "Verda Contemporary Cuisine",
+      "notes": [
+        "chill",
+        "contemporary",
+        "aesthetic"
+      ],
+      "area": "Jl. Botolempangan",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Verda+Contemporary+Cuisine+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 3,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222114",
+      "category_id": "11111111-1111-4111-8111-111111111103",
+      "name": "Plataran Makassar",
+      "notes": [
+        "formal dinner",
+        "nusantara upscale",
+        "spesial"
+      ],
+      "area": "Jl. Mutiara Boulevard",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Plataran+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 4,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222115",
+      "category_id": "11111111-1111-4111-8111-111111111103",
+      "name": "Hyatt Place Makassar",
+      "notes": [
+        "hotel dining",
+        "modern",
+        "formal"
+      ],
+      "area": "Jl. Jend. Sudirman",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Hyatt+Place+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 5,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222116",
+      "category_id": "11111111-1111-4111-8111-111111111103",
+      "name": "Secret Wagyu A5",
+      "notes": [
+        "wagyu",
+        "premium",
+        "tutup senin"
+      ],
+      "area": "Jl. Veteran Utara",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Secret+Wagyu+A5+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 6,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222117",
+      "category_id": "11111111-1111-4111-8111-111111111103",
+      "name": "La Piccola Italy - Makassar",
+      "notes": [
+        "chill",
+        "italian",
+        "tutup senin"
+      ],
+      "area": "Jl. Lamaddukelleng",
+      "lat": -5.1480531,
+      "lng": 119.4108628,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=La+Piccola+Italy+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 7,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222118",
+      "category_id": "11111111-1111-4111-8111-111111111103",
+      "name": "R&B Grill Makassar",
+      "notes": [
+        "premium grill",
+        "steakhouse",
+        "spesial"
+      ],
+      "area": "Komp. Akik Hijau",
+      "lat": null,
+      "lng": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=R%26B+Grill+Makassar",
+      "added_by": "Pije",
+      "is_visited": false,
+      "sort_order": 8,
+      "created_at": "2026-11-25T10:35:00.000Z"
+    }
+  ]
+}

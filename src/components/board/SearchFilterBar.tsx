@@ -1,13 +1,16 @@
-import { Search, UserRound, X } from 'lucide-react'
+import { ArrowUpDown, Search, UserRound, X } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
 export type VisitFilter = 'all' | 'unvisited' | 'visited' | 'incomplete'
+export type SortOrder = 'newest' | 'az' | 'za'
 
 interface SearchFilterBarProps {
   query: string
   onQueryChange: (value: string) => void
   visitFilter: VisitFilter
   onVisitFilterChange: (filter: VisitFilter) => void
+  sortOrder: SortOrder
+  onSortOrderChange: (sort: SortOrder) => void
   addedByFilter: string
   addedByOptions: string[]
   onAddedByFilterChange: (name: string) => void
@@ -31,6 +34,8 @@ export function SearchFilterBar({
   onQueryChange,
   visitFilter,
   onVisitFilterChange,
+  sortOrder,
+  onSortOrderChange,
   addedByFilter,
   addedByOptions,
   onAddedByFilterChange,
@@ -95,9 +100,31 @@ export function SearchFilterBar({
 
       <div
         role="group"
-        aria-label="Filter status kunjungan"
+        aria-label="Filter status kunjungan dan urutan"
         className="no-scrollbar flex items-center gap-1.5 overflow-x-auto pb-0.5"
       >
+        <div className="relative shrink-0">
+          <ArrowUpDown
+            className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink"
+            aria-hidden="true"
+          />
+          <select
+            aria-label="Urutkan daftar tempat"
+            value={sortOrder}
+            onChange={(e) => onSortOrderChange(e.target.value as SortOrder)}
+            className={cn(
+              'pop-press appearance-none rounded-xl border-2 border-ink py-1 pl-7 pr-5 text-xs font-extrabold shadow-pop-sm focus:outline-none',
+              sortOrder === 'newest'
+                ? 'bg-paper text-ink'
+                : 'bg-pandan text-ink',
+            )}
+          >
+            <option value="newest">Terbaru</option>
+            <option value="az">A–Z</option>
+            <option value="za">Z–A</option>
+          </select>
+        </div>
+
         {FILTER_OPTIONS.map((option) => {
           const isActive = visitFilter === option.id
           return (

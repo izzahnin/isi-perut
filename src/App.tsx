@@ -25,6 +25,7 @@ import { MakassarMapView } from './components/board/MakassarMapView'
 import { PlaceCard } from './components/board/PlaceCard'
 import {
   SearchFilterBar,
+  type SortOrder,
   type VisitFilter,
 } from './components/board/SearchFilterBar'
 import { AddCategoryModal } from './components/modals/AddCategoryModal'
@@ -96,6 +97,7 @@ function App() {
   const [cityFilter, setCityFilter] = useState<CityFilter>('makassar')
   const [query, setQuery] = useState('')
   const [visitFilter, setVisitFilter] = useState<VisitFilter>('all')
+  const [sortOrder, setSortOrder] = useState<SortOrder>('newest')
   const [addedByFilter, setAddedByFilter] = useState<string>('all')
   const [viewMode, setViewMode] = useState<ViewMode>('list')
   const [isLoading, setIsLoading] = useState(true)
@@ -277,7 +279,7 @@ function App() {
 
   const filteredPlaces = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return categoryPlaces.filter((place) => {
+    const matches = categoryPlaces.filter((place) => {
       if (visitFilter === 'visited' && !place.is_visited) return false
       if (visitFilter === 'unvisited' && place.is_visited) return false
       if (
@@ -308,7 +310,20 @@ function App() {
 
       return haystack.includes(q)
     })
-  }, [categoryPlaces, query, visitFilter, addedByFilter])
+
+    return [...matches].sort((a, b) => {
+      if (sortOrder === 'az') {
+        return a.name.localeCompare(b.name, 'id', { sensitivity: 'base' })
+      }
+      if (sortOrder === 'za') {
+        return b.name.localeCompare(a.name, 'id', { sensitivity: 'base' })
+      }
+      const timeDiff =
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      if (timeDiff !== 0) return timeDiff
+      return a.sort_order - b.sort_order
+    })
+  }, [categoryPlaces, query, visitFilter, addedByFilter, sortOrder])
 
   const groupedFilteredPlaces = useMemo(() => {
     if (!isAllCategories) return []
@@ -608,6 +623,8 @@ function App() {
             onQueryChange={setQuery}
             visitFilter={visitFilter}
             onVisitFilterChange={setVisitFilter}
+            sortOrder={sortOrder}
+            onSortOrderChange={setSortOrder}
             addedByFilter={addedByFilter}
             addedByOptions={addedByOptions}
             onAddedByFilterChange={setAddedByFilter}
